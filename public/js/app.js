@@ -19,6 +19,7 @@ const App = {
     if (window.ScraperUI) window.ScraperUI.init();
     if (window.StreetMode) window.StreetMode.init();
     if (window.WebhooksUI) window.WebhooksUI.init();
+    if (window.AdsAgentUI) window.AdsAgentUI.init();
     if (window.Analytics) window.Analytics.init();
   },
 

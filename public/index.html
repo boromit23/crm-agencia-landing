@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>GrowthCRM | Dashboard & Pipeline de Agencia</title>
-  <meta name="description" content="CRM de alto rendimiento para agencias de Landing Pages, Optimización de Google Maps y Tarjetas NFC.">
+  <title>GrowthCRM | Dashboard, Pipeline & AI Ads Agent</title>
+  <meta name="description" content="CRM y suite de agentes inteligentes para captación de clientes de Landing Pages, Optimización de Google Maps y Tarjetas NFC.">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#070a12">
+  <meta name="theme-color" content="#0b0f19">
 
-  <!-- CSS Stylesheets (Hubly CRM Style) -->
+  <!-- CSS Stylesheets (Hubly CRM Style & AI Agents) -->
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/dashboard.css">
   <link rel="stylesheet" href="/css/kanban.css">
   <link rel="stylesheet" href="/css/scraper.css">
   <link rel="stylesheet" href="/css/street-mode.css">
   <link rel="stylesheet" href="/css/analytics.css">
+  <link rel="stylesheet" href="/css/ads_agent.css">
 </head>
 <body>
 
@@ -56,11 +57,11 @@
           </a>
         </li>
 
-        <!-- 4. FACEBOOK ADS -->
+        <!-- 4. FACEBOOK ADS & AI AGENTS -->
         <li>
           <a class="nav-link" data-view="webhooks" id="navWebhooks">
             <span class="icon">⚡</span>
-            <span>Facebook Ads</span>
+            <span>Facebook Ads & AI</span>
           </a>
         </li>
 
@@ -151,7 +152,7 @@
 
           <div class="dash-kpi-card">
             <div class="dash-kpi-head">
-              <div class="dash-kpi-icon" style="color: var(--accent-purple-text);">🏃‍♂️</div>
+              <div class="dash-kpi-icon" style="color: var(--accent-nfc-text);">🏃‍♂️</div>
               <span class="dash-kpi-trend neutral">Modo Calle</span>
             </div>
             <div class="dash-kpi-value" id="kpiDashStreetVisits">0</div>
@@ -536,88 +537,297 @@
       </section>
 
       <!-- ========================================================== -->
-      <!-- SECTION 4: FACEBOOK ADS & WEBHOOKS -->
+      <!-- SECTION 4: FACEBOOK ADS & AI AGENTS -->
       <!-- ========================================================== -->
       <section class="view-section" id="view-webhooks">
-        <div class="analytics-sections-grid">
-          
-          <div class="analytics-card">
-            <div class="analytics-card-header">
-              <h3><span>⚡</span> <span>Conector de Facebook Lead Ads</span></h3>
-            </div>
+        
+        <!-- Sub-tabs for Meta Ads Suite -->
+        <div class="ads-subtabs-nav">
+          <button class="ads-subtab-btn active" data-tab="campaign-builder">
+            <span>🤖</span> <span>Estratega de Facebook Ads (IA)</span>
+          </button>
+          <button class="ads-subtab-btn" data-tab="whatsapp-warmer">
+            <span>💬</span> <span>Agente de WhatsApp en Caliente</span>
+          </button>
+          <button class="ads-subtab-btn" data-tab="webhook-connector">
+            <span>⚡</span> <span>Conector de Webhooks & Formularios</span>
+          </button>
+        </div>
 
-            <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 18px;">
-              Copia esta URL y configúrala en tus campañas de **Meta Ads**, **Zapier**, **Make** o formularios web para que cada prospecto que rellene tus anuncios caiga directamente en el CRM en tiempo real.
-            </p>
-
-            <div class="form-group">
-              <label class="form-label">URL del Webhook (POST)</label>
-              <div class="input-with-action">
-                <input type="text" id="webhookUrlDisplay" class="form-input" readonly value="/api/webhooks/facebook">
-                <button type="button" class="btn btn-secondary btn-sm" id="btnCopyWebhookUrl">📋 Copiar</button>
+        <!-- TAB 1: AI CAMPAIGN BUILDER -->
+        <div class="ads-tab-pane" id="tab-pane-campaign-builder">
+          <div class="campaign-builder-grid">
+            
+            <!-- Left: Campaign Parameters Form -->
+            <div class="analytics-card">
+              <div class="analytics-card-header">
+                <h3><span>🎯</span> <span>Generador de Campañas de Alto Impacto</span></h3>
               </div>
-            </div>
+              <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">
+                El agente diseña la segmentación, el presupuesto y los copys persuasivos listos para copiar y pegar en Meta Ads Manager.
+              </p>
 
-            <div class="form-group">
-              <label class="form-label">Verify Token</label>
-              <div class="input-with-action">
-                <input type="text" id="webhookVerifyTokenDisplay" class="form-input" readonly value="wh_sec_crm_landing_2026">
-                <button type="button" class="btn btn-secondary btn-sm" id="btnCopyVerifyToken">📋 Copiar</button>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Página Pública de Captura (Landing de Anuncios)</label>
-              <div class="input-with-action">
-                <input type="text" id="publicCaptureUrlDisplay" class="form-input" readonly value="/captura.html">
-                <button type="button" class="btn btn-secondary btn-sm" id="btnCopyCaptureUrl">📋 Copiar</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="analytics-card">
-            <div class="analytics-card-header">
-              <h3><span>🧪</span> <span>Simulador de Leads de Facebook Ads</span></h3>
-            </div>
-
-            <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 16px;">
-              Haz una prueba en vivo para simular que un prospecto acaba de rellenar tu formulario de Facebook Ads.
-            </p>
-
-            <form id="fbSimulatorForm">
-              <div class="form-group">
-                <label class="form-label" for="simBizName">Nombre del Negocio Simulado</label>
-                <input type="text" id="simBizName" class="form-input" value="Restaurante La Parrilla Real">
-              </div>
-
-              <div class="fast-form-grid">
+              <form id="adsGeneratorForm">
                 <div class="form-group">
-                  <label class="form-label" for="simContactName">Nombre del Contacto</label>
-                  <input type="text" id="simContactName" class="form-input" value="Alberto Ramírez">
+                  <label class="form-label" for="adGenNiche">Nicho o Rubro de Negocios</label>
+                  <input type="text" id="adGenNiche" class="form-input" value="Talleres Mecánicos" required>
                 </div>
+
                 <div class="form-group">
-                  <label class="form-label" for="simPhone">Teléfono / WhatsApp</label>
-                  <input type="tel" id="simPhone" class="form-input" value="+58 414 1234567">
+                  <label class="form-label" for="adGenCity">Ciudad o Región Objetivo</label>
+                  <input type="text" id="adGenCity" class="form-input" value="Valencia, Venezuela" required>
                 </div>
+
+                <div class="fast-form-grid">
+                  <div class="form-group">
+                    <label class="form-label" for="adGenBudget">Presupuesto Diario ($ USD)</label>
+                    <input type="number" id="adGenBudget" class="form-input" value="10" min="5" step="1">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="adGenAngle">Ángulo de Oferta</label>
+                    <select id="adGenAngle" class="form-select">
+                      <option value="gbp_landing_gift">🎁 Landing Gratis + GBP</option>
+                      <option value="nfc_reviews">💳 Tarjetas NFC Reseñas</option>
+                      <option value="web_redesign">⚡ Rediseño Web ($450)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 6px;">
+                  🚀 Generar Estrategia & Copys con IA
+                </button>
+              </form>
+
+              <div id="adsGenLoading" style="display: none; text-align: center; padding: 30px; margin-top: 14px;">
+                <div style="font-size: 28px; animation: spin 1s infinite linear; display: inline-block;">⚙️</div>
+                <div style="font-weight: 700; font-size: 13.5px; margin-top: 10px;">Diseñando estrategia publicitaria y copys AIDA...</div>
               </div>
+            </div>
 
-              <div class="form-group">
-                <label class="form-label" for="simCampaign">Campaña de Anuncios</label>
-                <select id="simCampaign" class="form-select">
-                  <option value="Campaña 1: Landing Page Gratis GBP">Campaña 1: Landing Page Gratis GBP</option>
-                  <option value="Campaña 2: Tarjetas NFC Reseñas">Campaña 2: Tarjetas NFC Reseñas</option>
-                  <option value="Campaña 3: Rediseño Web Premium">Campaña 3: Rediseño Web Premium</option>
-                </select>
+            <!-- Right: Ad Preview & Campaign Structure -->
+            <div id="adsGenResults">
+              <div class="ad-preview-card">
+                
+                <!-- Ad Header -->
+                <div class="ad-preview-header">
+                  <div class="ad-page-avatar">⚡</div>
+                  <div class="ad-page-info">
+                    <div class="ad-page-name">Growth Agency · Landing & Maps</div>
+                    <div class="ad-sponsored-tag">🌐 Publicidad · Patrocinado</div>
+                  </div>
+                  <button class="btn btn-secondary btn-sm" id="btnCopyPrimaryCopy">📋 Copiar Copy</button>
+                </div>
+
+                <!-- Copy Variants Switcher -->
+                <div class="copy-variant-chips" id="copyVariantChips"></div>
+
+                <!-- Primary Text -->
+                <div class="ad-primary-copy-box" id="adPrimaryCopyDisplay">Cargando copy publicitario...</div>
+
+                <!-- Ad Media Mockup -->
+                <div class="ad-media-placeholder">
+                  <span style="font-size: 32px;">📱</span>
+                  <div style="font-weight: 700; font-size: 13.5px; color: var(--text-primary);" id="adMediaSuggestionDisplay">
+                    Mockup visual de Google Maps + Landing Page
+                  </div>
+                  <div style="font-size: 11.5px; opacity: 0.8;">Formato recomendado: 1080x1080px (Feed) o 1080x1920px (Reels/Stories)</div>
+                </div>
+
+                <!-- Ad CTA Footer -->
+                <div class="ad-cta-banner">
+                  <div>
+                    <div class="ad-headline-text" id="adHeadlineDisplay">🎁 Landing Page de regalo para tu negocio</div>
+                    <div class="ad-domain-subtext">GROWTHCRM.AGENCY · FORMULARIO INSTANTÁNEO</div>
+                  </div>
+                  <button class="btn btn-primary btn-sm" id="adCtaBtnDisplay">Más información</button>
+                </div>
+
+                <!-- Instant Form Questions Box -->
+                <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--crm-border-subtle);">
+                  <div style="font-size: 12.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">
+                    📋 Preguntas del Formulario Instantáneo de Meta:
+                  </div>
+                  <div id="leadFormQuestionsList"></div>
+                </div>
+
+                <!-- Campaign Summary Box -->
+                <div style="margin-top: 14px; padding: 12px; background: var(--crm-bg-input); border-radius: var(--radius-md); font-size: 12px; border: 1px solid var(--crm-border-subtle);">
+                  <div style="margin-bottom: 4px;"><strong>📌 Campaña:</strong> <span id="adCampNameDisplay">-</span></div>
+                  <div style="margin-bottom: 4px;"><strong>🎯 Objetivo:</strong> <span id="adObjectiveDisplay">-</span></div>
+                  <div style="margin-bottom: 4px;"><strong>📊 Proyección:</strong> <span id="adEstLeadsDisplay" style="color: var(--accent-success-text); font-weight: 700;">-</span></div>
+                  <div><strong>📍 Segmentación:</strong> <span id="adTargetingDisplay" style="color: var(--text-secondary);">-</span></div>
+                </div>
+
+                <button class="btn btn-primary" id="btnCopyFullCampaignPack" style="width: 100%; margin-top: 14px;">
+                  📋 Copiar Paquete Completo para Meta Ads Manager
+                </button>
               </div>
+            </div>
 
-              <button type="submit" class="btn btn-primary" id="btnRunSim" style="width: 100%;">
-                ⚡ Disparar Lead Simulado de Facebook
-              </button>
-            </form>
-
-            <div id="simResultBox" style="display: none;"></div>
           </div>
         </div>
+
+        <!-- TAB 2: WHATSAPP AI LEAD WARMER SIMULATOR -->
+        <div class="ads-tab-pane" id="tab-pane-whatsapp-warmer" style="display: none;">
+          <div class="whatsapp-sim-container">
+            
+            <!-- Left: Strategy & Quick Objections -->
+            <div class="analytics-card">
+              <div class="analytics-card-header">
+                <h3><span>🤖</span> <span>Calentamiento Inmediato de Leads</span></h3>
+              </div>
+
+              <div class="temperature-gauge">
+                <div>
+                  <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Temperatura del Lead</div>
+                  <div style="font-size: 13.5px; font-weight: 700; color: var(--text-primary);">Nivel de Interés Comercial</div>
+                </div>
+                <div class="gauge-val" id="simLeadTemperatureDisplay">70%</div>
+              </div>
+
+              <div style="background: var(--crm-bg-input); border: 1px solid var(--crm-border-subtle); border-radius: var(--radius-md); padding: 12px; margin-bottom: 16px; font-size: 12px;">
+                <div style="font-weight: 700; color: var(--accent-primary); margin-bottom: 3px;">🎯 Siguiente Paso Recomendado:</div>
+                <div id="simNextStepDisplay" style="color: var(--text-secondary);">Hacer pregunta de calificación abierta para enganchar la conversación.</div>
+              </div>
+
+              <div style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px;">
+                ⚡ Prueba rápida de objeciones comunes:
+              </div>
+
+              <div class="quick-objections-grid">
+                <button class="btn-objection-chip" data-msg="¿Por qué es gratis la página web? ¿Tiene algún costo oculto?">
+                  <span>❓ "¿Por qué es gratis la landing?"</span>
+                  <span>👉</span>
+                </button>
+                <button class="btn-objection-chip" data-msg="¿Cuánto cuesta el servicio y cuánto vale la tarjeta NFC?">
+                  <span>💵 "¿Cuánto cuesta la tarjeta / servicio?"</span>
+                  <span>👉</span>
+                </button>
+                <button class="btn-objection-chip" data-msg="¿Cómo funciona exactamente la tarjeta inteligente NFC?">
+                  <span>💳 "¿Cómo funciona la tarjeta NFC?"</span>
+                  <span>👉</span>
+                </button>
+                <button class="btn-objection-chip" data-msg="Sí, me interesa ver una demostración para mi negocio.">
+                  <span>🚀 "Sí me interesa, mándame el boceto"</span>
+                  <span>👉</span>
+                </button>
+                <button class="btn-objection-chip" data-msg="Nosotros ya tenemos página web actualmente.">
+                  <span>🌐 "Ya tenemos página web"</span>
+                  <span>👉</span>
+                </button>
+              </div>
+
+              <button class="btn btn-secondary btn-sm" id="btnResetChatSim" style="width: 100%; margin-top: 16px;">
+                🔄 Reiniciar Simulación de Chat
+              </button>
+            </div>
+
+            <!-- Right: Interactive WhatsApp Smartphone Chat Frame -->
+            <div class="chat-phone-frame">
+              <div class="chat-phone-header">
+                <div class="chat-user-profile">
+                  <div class="chat-user-avatar">👤</div>
+                  <div class="chat-user-info">
+                    <h4>Carlos Mendoza (Taller El Trigal)</h4>
+                    <span>🟢 En línea · Lead de Facebook Ads</span>
+                  </div>
+                </div>
+                <span style="font-size: 18px;">⋮</span>
+              </div>
+
+              <div class="chat-body-messages" id="chatMessagesBody"></div>
+
+              <div class="chat-input-bar">
+                <input type="text" id="simChatInput" placeholder="Escribe como si fueras el cliente...">
+                <button class="chat-send-btn" id="btnSimSend">➤</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- TAB 3: WEBHOOK CONNECTOR & ADS SIMULATOR -->
+        <div class="ads-tab-pane" id="tab-pane-webhook-connector" style="display: none;">
+          <div class="analytics-sections-grid">
+            <div class="analytics-card">
+              <div class="analytics-card-header">
+                <h3><span>⚡</span> <span>Conector de Facebook Lead Ads</span></h3>
+              </div>
+
+              <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 18px;">
+                Copia esta URL y configúrala en tus campañas de **Meta Ads**, **Zapier**, **Make** o formularios web para que cada prospecto que rellene tus anuncios caiga directamente en el CRM en tiempo real.
+              </p>
+
+              <div class="form-group">
+                <label class="form-label">URL del Webhook (POST)</label>
+                <div class="input-with-action">
+                  <input type="text" id="webhookUrlDisplay" class="form-input" readonly value="/api/webhooks/facebook">
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnCopyWebhookUrl">📋 Copiar</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Verify Token</label>
+                <div class="input-with-action">
+                  <input type="text" id="webhookVerifyTokenDisplay" class="form-input" readonly value="wh_sec_crm_landing_2026">
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnCopyVerifyToken">📋 Copiar</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Página Pública de Captura (Landing de Anuncios)</label>
+                <div class="input-with-action">
+                  <input type="text" id="publicCaptureUrlDisplay" class="form-input" readonly value="/captura.html">
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnCopyCaptureUrl">📋 Copiar</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="analytics-card">
+              <div class="analytics-card-header">
+                <h3><span>🧪</span> <span>Simulador de Leads de Facebook Ads</span></h3>
+              </div>
+
+              <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 16px;">
+                Haz una prueba en vivo para simular que un prospecto acaba de rellenar tu formulario de Facebook Ads.
+              </p>
+
+              <form id="fbSimulatorForm">
+                <div class="form-group">
+                  <label class="form-label" for="simBizName">Nombre del Negocio Simulado</label>
+                  <input type="text" id="simBizName" class="form-input" value="Restaurante La Parrilla Real">
+                </div>
+
+                <div class="fast-form-grid">
+                  <div class="form-group">
+                    <label class="form-label" for="simContactName">Nombre del Contacto</label>
+                    <input type="text" id="simContactName" class="form-input" value="Alberto Ramírez">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="simPhone">Teléfono / WhatsApp</label>
+                    <input type="tel" id="simPhone" class="form-input" value="+58 414 1234567">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="simCampaign">Campaña de Anuncios</label>
+                  <select id="simCampaign" class="form-select">
+                    <option value="Campaña 1: Landing Page Gratis GBP">Campaña 1: Landing Page Gratis GBP</option>
+                    <option value="Campaña 2: Tarjetas NFC Reseñas">Campaña 2: Tarjetas NFC Reseñas</option>
+                    <option value="Campaña 3: Rediseño Web Premium">Campaña 3: Rediseño Web Premium</option>
+                  </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="btnRunSim" style="width: 100%;">
+                  ⚡ Disparar Lead Simulado de Facebook
+                </button>
+              </form>
+
+              <div id="simResultBox" style="display: none;"></div>
+            </div>
+          </div>
+        </div>
+
       </section>
 
       <!-- ========================================================== -->
@@ -889,6 +1099,7 @@
   <script src="/js/scraper.js"></script>
   <script src="/js/street-mode.js"></script>
   <script src="/js/webhooks.js"></script>
+  <script src="/js/ads_agent.js"></script>
   <script src="/js/analytics.js"></script>
   <script src="/js/app.js"></script>
 </body>

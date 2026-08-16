@@ -9,6 +9,7 @@ const salesRouter = require('./src/routes/sales');
 const webhooksRouter = require('./src/routes/webhooks');
 const analyticsRouter = require('./src/routes/analytics');
 const settingsRouter = require('./src/routes/settings');
+const aiAgentRouter = require('./src/routes/ai_agent');
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use('/api/sales', salesRouter);
 app.use('/api/webhooks', webhooksRouter);
 app.use('/api/analytics', analyticsRouter);
 app.use('/api/settings', settingsRouter);
+app.use('/api/agent', aiAgentRouter);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

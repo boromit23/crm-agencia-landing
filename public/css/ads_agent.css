@@ -1,0 +1,360 @@
+/* Facebook Ads Strategist & WhatsApp Warmer Agent Styles */
+
+/* Sub-tabs in Facebook Ads Section */
+.ads-subtabs-nav {
+  display: flex;
+  background: var(--crm-bg-input);
+  border: 1px solid var(--crm-border-subtle);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  gap: 4px;
+  margin-bottom: 20px;
+  width: fit-content;
+}
+
+.ads-subtab-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 7px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ads-subtab-btn:hover {
+  color: var(--text-primary);
+}
+
+.ads-subtab-btn.active {
+  background: var(--crm-bg-surface-elevated);
+  color: var(--accent-primary);
+  box-shadow: var(--crm-shadow-sm);
+}
+
+/* Strategy Generator Layout */
+.campaign-builder-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 24px;
+}
+
+/* Meta Ad Preview Mockup Card */
+.ad-preview-card {
+  background: var(--crm-bg-card);
+  border: 1px solid var(--crm-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: var(--crm-shadow-md);
+  position: relative;
+}
+
+.ad-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.ad-page-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #fff;
+}
+
+.ad-page-info {
+  flex: 1;
+}
+
+.ad-page-name {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.ad-sponsored-tag {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ad-primary-copy-box {
+  background: var(--crm-bg-input);
+  border: 1px solid var(--crm-border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.ad-media-placeholder {
+  height: 200px;
+  background: linear-gradient(135deg, #101c33 0%, #1e3a5f 100%);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  gap: 8px;
+  margin-bottom: 14px;
+  border: 1px dashed var(--crm-border-medium);
+  padding: 16px;
+  text-align: center;
+}
+
+.ad-cta-banner {
+  background: var(--crm-bg-surface-elevated);
+  border: 1px solid var(--crm-border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ad-headline-text {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.ad-domain-subtext {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Copies Carousel / Switcher */
+.copy-variant-chips {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+  overflow-x: auto;
+}
+
+.copy-chip {
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  background: var(--crm-bg-input);
+  border: 1px solid var(--crm-border-subtle);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.copy-chip.active {
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+/* ========================================================== */
+/* WHATSAPP AI LEAD WARMER SIMULATOR */
+/* ========================================================== */
+.whatsapp-sim-container {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 24px;
+}
+
+.chat-phone-frame {
+  background: var(--crm-bg-card);
+  border: 1px solid var(--crm-border-medium);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--crm-shadow-lg);
+  display: flex;
+  flex-direction: column;
+  height: 520px;
+}
+
+.chat-phone-header {
+  background: #075e54;
+  color: #fff;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #128c7e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.chat-user-info h4 {
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.chat-user-info span {
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.chat-body-messages {
+  flex: 1;
+  background: #0b141a;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Chat Bubbles */
+.chat-msg {
+  max-width: 80%;
+  padding: 9px 13px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  position: relative;
+  word-break: break-word;
+}
+
+.chat-msg.customer {
+  align-self: flex-start;
+  background: #202c33;
+  color: #e9edef;
+  border-bottom-left-radius: 2px;
+}
+
+.chat-msg.agent {
+  align-self: flex-end;
+  background: #005c4b;
+  color: #e9edef;
+  border-bottom-right-radius: 2px;
+}
+
+.chat-time {
+  font-size: 9.5px;
+  opacity: 0.7;
+  text-align: right;
+  margin-top: 3px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.chat-input-bar {
+  background: #202c33;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat-input-bar input {
+  flex: 1;
+  background: #2a3942;
+  border: none;
+  outline: none;
+  color: #e9edef;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-family: inherit;
+}
+
+.chat-send-btn {
+  background: #00a884;
+  border: none;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Quick Objection Buttons */
+.quick-objections-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.btn-objection-chip {
+  background: var(--crm-bg-input);
+  border: 1px solid var(--crm-border-subtle);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-objection-chip:hover {
+  background: var(--crm-bg-card-hover);
+  border-color: var(--accent-primary);
+  transform: translateX(3px);
+}
+
+.temperature-gauge {
+  background: var(--crm-bg-input);
+  border: 1px solid var(--crm-border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gauge-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--accent-success-text);
+}
+
+@media (max-width: 900px) {
+  .campaign-builder-grid, .whatsapp-sim-container {
+    grid-template-columns: 1fr;
+  }
+}
