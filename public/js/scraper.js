@@ -63,7 +63,7 @@ const ScraperUI = {
       document.getElementById('highOppCount').innerText = res.data.high_priority_count;
 
       this.renderProspects(this.currentResults);
-      API.toast(`Se encontraron ${this.currentResults.length} prospectos potenciales`, 'success');
+      API.toast(`Se encontraron ${this.currentResults.length} negocios en ${location}`, 'success');
     } catch (err) {
       loadingState.style.display = 'none';
       API.toast('Error al buscar prospectos en Google Maps', 'error');
@@ -77,7 +77,7 @@ const ScraperUI = {
     if (prospects.length === 0) {
       grid.innerHTML = `
         <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
-          No se encontraron resultados para esta búsqueda. Intenta con otro nicho o ciudad.
+          No se encontraron resultados para esta búsqueda. Intenta con otro nicho o ciudad más específica.
         </div>
       `;
       return;
@@ -85,6 +85,8 @@ const ScraperUI = {
 
     grid.innerHTML = prospects.map((p, index) => {
       const isHigh = p.opportunity_score >= 80;
+      const hasPhone = !!p.phone;
+
       return `
         <div class="prospect-card ${isHigh ? 'high-opportunity' : 'medium-opportunity'}" id="prospect-card-${index}">
           <div class="prospect-top">
@@ -100,19 +102,21 @@ const ScraperUI = {
           <div class="prospect-diagnosis">
             <div class="diagnosis-item">
               <span class="diagnosis-label">Sitio Web:</span>
-              <span class="diagnosis-val" style="color: ${p.has_website ? 'var(--accent-warning)' : 'var(--accent-danger)'};">
+              <span class="diagnosis-val" style="color: ${p.has_website ? 'var(--accent-warning-text)' : 'var(--accent-danger-text)'};">
                 ${p.has_website ? '⚡ Tiene Web (Propuesta Rediseño)' : '🚩 Sin Web (Gifting GBP + Landing)'}
               </span>
             </div>
             <div class="diagnosis-item">
               <span class="diagnosis-label">Reseñas en Google:</span>
-              <span class="diagnosis-val" style="color: ${p.reviews_count < 20 ? 'var(--accent-purple)' : 'var(--text-primary)'};">
-                ⭐ ${p.rating || '4.0'} (${p.reviews_count} reseñas) ${p.reviews_count < 20 ? '• 💳 Ideal NFC' : ''}
+              <span class="diagnosis-val" style="color: ${p.reviews_count < 20 ? 'var(--accent-purple-text)' : 'var(--text-primary)'};">
+                ⭐ ${p.rating || '4.0'} (${p.reviews_count || 0} reseñas) ${p.reviews_count < 20 ? '· 💳 Ideal NFC' : ''}
               </span>
             </div>
             <div class="diagnosis-item">
               <span class="diagnosis-label">Teléfono:</span>
-              <span class="diagnosis-val">${p.phone || 'No listado'}</span>
+              <span class="diagnosis-val" style="color: ${hasPhone ? 'var(--text-primary)' : 'var(--text-muted)'};">
+                ${hasPhone ? p.phone : '⚠️ No listado en ficha pública'}
+              </span>
             </div>
           </div>
 
@@ -124,8 +128,8 @@ const ScraperUI = {
               💬 WhatsApp
             </button>
             ${p.maps_url ? `
-              <a href="${p.maps_url}" target="_blank" class="btn btn-secondary btn-sm" title="Ver en Maps">
-                🗺️
+              <a href="${p.maps_url}" target="_blank" class="btn btn-secondary btn-sm" title="Abrir ficha exacta en Google Maps">
+                🗺️ Maps
               </a>
             ` : ''}
           </div>
@@ -148,9 +152,9 @@ const ScraperUI = {
       await API.createLead({
         business_name: prospect.business_name,
         contact_name: '',
-        phone: prospect.phone,
-        whatsapp: prospect.whatsapp || prospect.phone,
-        email: prospect.email,
+        phone: prospect.phone || '',
+        whatsapp: prospect.whatsapp || prospect.phone || '',
+        email: prospect.email || '',
         address: prospect.address,
         city: prospect.city,
         category: prospect.category,
@@ -166,14 +170,13 @@ const ScraperUI = {
         tags: ['Google Maps Scraper', prospect.main_offer === 'gbp_landing' ? 'Gifting GBP' : 'Rediseño Web']
       });
 
-      API.toast(`"${prospect.business_name}" importado al CRM con éxito`, 'success');
+      API.toast(`"${prospect.business_name}" importado al CRM`, 'success');
       if (btn) {
         btn.innerText = '✅ Importado';
         btn.classList.remove('btn-primary');
         btn.classList.add('btn-secondary');
       }
 
-      // Reload pipeline & analytics if in background
       if (window.Pipeline) window.Pipeline.loadLeads();
       if (window.Analytics) window.Analytics.loadMetrics();
     } catch (err) {
@@ -199,9 +202,8 @@ const ScraperUI = {
 
     try {
       const res = await API.batchCreateLeads(this.currentResults);
-      API.toast(`¡${res.count} prospectos importados al Pipeline!`, 'success');
+      API.toast(`¡${res.count} negocios importados al Pipeline!`, 'success');
       
-      // Update all buttons in grid
       document.querySelectorAll('.prospect-card .btn-primary').forEach(b => {
         b.innerText = '✅ Importado';
         b.classList.remove('btn-primary');
@@ -253,8 +255,13 @@ const ScraperUI = {
     };
 
     document.getElementById('btnSendWhatsappNow').onclick = () => {
+      let targetPhone = prospect.phone;
+      if (!targetPhone) {
+        targetPhone = prompt(`Por favor ingresa el número de WhatsApp de "${prospect.business_name}":`, '+34');
+        if (!targetPhone) return;
+      }
       const text = document.getElementById('scriptContent').value;
-      API.openWhatsApp(prospect.phone, text);
+      API.openWhatsApp(targetPhone, text);
       modal.classList.remove('active');
     };
 

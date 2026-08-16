@@ -6,3 +6,7 @@ node_modules/
 set_vercel_env.js
 setup_supabase.js
 seed_data.js
+update_maps_urls.js
+test_scraper.js
+*.html
+!public/**/*.html
