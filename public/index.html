@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>GrowthCRM | Landing Pages, Google Maps & NFC Cards</title>
-  <meta name="description" content="CRM de alto rendimiento para captación y ventas de Landing Pages, Optimización de Google Maps y Tarjetas NFC.">
+  <title>GrowthCRM | Dashboard & Pipeline de Agencia</title>
+  <meta name="description" content="CRM de alto rendimiento para agencias de Landing Pages, Optimización de Google Maps y Tarjetas NFC.">
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#070a12">
 
-  <!-- CSS Stylesheets -->
+  <!-- CSS Stylesheets (Hubly CRM Style) -->
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
   <link rel="stylesheet" href="/css/kanban.css">
   <link rel="stylesheet" href="/css/scraper.css">
   <link rel="stylesheet" href="/css/street-mode.css">
@@ -30,35 +31,44 @@
       </div>
 
       <ul class="nav-links">
+        <!-- 1. DASHBOARD -->
         <li>
-          <a class="nav-link active" data-view="pipeline" id="navPipeline">
+          <a class="nav-link active" data-view="dashboard" id="navDashboard">
             <span class="icon">📊</span>
-            <span>Pipeline de Ventas</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <!-- 2. PIPELINE -->
+        <li>
+          <a class="nav-link" data-view="pipeline" id="navPipeline">
+            <span class="icon">📋</span>
+            <span>Pipeline</span>
             <span class="badge-count" id="pipelineCountBadge">0</span>
           </a>
         </li>
+
+        <!-- 3. BUSCADOR MAPS & MODO CALLE -->
         <li>
           <a class="nav-link" data-view="scraper" id="navScraper">
             <span class="icon">🗺️</span>
-            <span>Buscador Google Maps</span>
+            <span>Búsqueda Maps & Calle</span>
           </a>
         </li>
-        <li>
-          <a class="nav-link" data-view="street" id="navStreet">
-            <span class="icon">📱</span>
-            <span>Modo Calle (NFC)</span>
-          </a>
-        </li>
+
+        <!-- 4. FACEBOOK ADS -->
         <li>
           <a class="nav-link" data-view="webhooks" id="navWebhooks">
             <span class="icon">⚡</span>
-            <span>Facebook Ads & Leads</span>
+            <span>Facebook Ads</span>
           </a>
         </li>
+
+        <!-- 5. REPORTE DE VENTAS -->
         <li>
           <a class="nav-link" data-view="analytics" id="navAnalytics">
             <span class="icon">📈</span>
-            <span>Reportes de Ventas</span>
+            <span>Reporte de Ventas</span>
           </a>
         </li>
       </ul>
@@ -67,22 +77,23 @@
         <div class="user-status">
           <span class="status-dot"></span>
           <div>
-            <div style="font-weight: 700; color: #fff; font-size: 12.5px;">Supabase Cloud</div>
-            <div style="font-size: 11px; color: var(--text-muted);">Sincronización en vivo</div>
+            <div style="font-weight: 700; color: var(--text-primary); font-size: 12px;">Supabase Cloud</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">Sincronizado</div>
           </div>
         </div>
+        <button class="theme-switch-btn" title="Cambiar Tema (Claro / Oscuro)">☀️</button>
       </div>
     </aside>
 
     <!-- MAIN WRAPPER -->
     <div class="main-wrapper">
 
-      <!-- TOP APP HEADER WITH CENTRAL OMNIBOX -->
+      <!-- TOP APP HEADER -->
       <header class="top-header">
         <div class="header-left">
           <div class="page-title">
-            <h2>Pipeline de Ventas</h2>
-            <p>Gestiona tus prospectos y etapas de cierre</p>
+            <h2>Dashboard General</h2>
+            <p>Métricas clave, objetivos y rendimiento comercial</p>
           </div>
         </div>
 
@@ -94,6 +105,7 @@
         </div>
 
         <div class="header-actions">
+          <button class="theme-switch-btn" title="Cambiar Tema (Claro / Oscuro)">☀️</button>
           <button class="btn btn-primary" id="btnNewLead">
             <span>＋</span> <span>Nuevo Prospecto</span>
           </button>
@@ -101,9 +113,172 @@
       </header>
 
       <!-- ========================================================== -->
-      <!-- VIEW 1: PIPELINE KANBAN BOARD -->
+      <!-- SECTION 1: DASHBOARD (AL INICIO) -->
       <!-- ========================================================== -->
-      <section class="view-section active" id="view-pipeline">
+      <section class="view-section active" id="view-dashboard">
+        
+        <!-- Hero Greeting Banner -->
+        <div class="dashboard-hero-banner">
+          <div class="dashboard-greeting">
+            <h2>Bienvenido a tu Centro de Crecimiento</h2>
+            <p>Monitorea la captación de prospectos en frío, ventas de tarjetas NFC y conversiones de Landing Pages.</p>
+          </div>
+          <div class="dashboard-hero-actions">
+            <button class="btn btn-secondary btn-sm" id="btnRefreshDashboard">🔄 Actualizar Datos</button>
+          </div>
+        </div>
+
+        <!-- 8 Strategic KPIs for the Agency Business Model -->
+        <div class="dashboard-kpi-grid">
+          
+          <div class="dash-kpi-card">
+            <div class="dash-kpi-head">
+              <div class="dash-kpi-icon" style="color: var(--accent-success-text);">💰</div>
+              <span class="dash-kpi-trend positive">Cobrado</span>
+            </div>
+            <div class="dash-kpi-value" id="kpiDashRevenue">$0.00</div>
+            <div class="dash-kpi-label">Facturación Total Cobrada</div>
+          </div>
+
+          <div class="dash-kpi-card">
+            <div class="dash-kpi-head">
+              <div class="dash-kpi-icon" style="color: var(--accent-primary);">📈</div>
+              <span class="dash-kpi-trend neutral">En Curso</span>
+            </div>
+            <div class="dash-kpi-value" id="kpiDashPipeline">$0.00</div>
+            <div class="dash-kpi-label">Valor Activo en Pipeline</div>
+          </div>
+
+          <div class="dash-kpi-card">
+            <div class="dash-kpi-head">
+              <div class="dash-kpi-icon" style="color: var(--accent-purple-text);">🏃‍♂️</div>
+              <span class="dash-kpi-trend neutral">Modo Calle</span>
+            </div>
+            <div class="dash-kpi-value" id="kpiDashStreetVisits">0</div>
+            <div class="dash-kpi-label">Negocios Visitados en Frío</div>
+          </div>
+
+          <div class="dash-kpi-card">
+            <div class="dash-kpi-head">
+              <div class="dash-kpi-icon" style="color: var(--accent-warning-text);">💳</div>
+              <span class="dash-kpi-trend positive">$35 c/u</span>
+            </div>
+            <div class="dash-kpi-value" id="kpiDashNfcSold">0</div>
+            <div class="dash-kpi-label">Tarjetas NFC Vendidas</div>
+          </div>
+
+          <div class="dash-kpi-card">
+            <div class="dash-kpi-head">
+              <div class="dash-kpi-icon" style="color: var(--accent-primary);">🌐</div>
+              <span class="dash-kpi-trend neutral">Gifting</span>
+            </div>
+            <div class="dash-kpi-value" id="kpiDashGbpGifts">0</div>
+            <div class="dash-kpi-label">Landings con Servicio GBP</div>
+          </div>
+
+          <div class="dash-kpi-card">
+            <div class="dash-kpi-head">
+              <div class="dash-kpi-icon" style="color: var(--accent-whatsapp);">💬</div>
+              <span class="dash-kpi-trend positive">WhatsApp</span>
+            </div>
+            <div class="dash-kpi-value" id="kpiDashContacted">0</div>
+            <div class="dash-kpi-label">Prospectos Atendidos / Demo</div>
+          </div>
+
+          <div class="dash-kpi-card">
+            <div class="dash-kpi-head">
+              <div class="dash-kpi-icon" style="color: var(--accent-danger-text);">⚡</div>
+              <span class="dash-kpi-trend neutral">Meta Ads</span>
+            </div>
+            <div class="dash-kpi-value" id="kpiDashFbLeads">0</div>
+            <div class="dash-kpi-label">Leads Facebook Ads</div>
+          </div>
+
+          <div class="dash-kpi-card">
+            <div class="dash-kpi-head">
+              <div class="dash-kpi-icon" style="color: var(--accent-success-text);">🎯</div>
+              <span class="dash-kpi-trend positive">Efectividad</span>
+            </div>
+            <div class="dash-kpi-value" id="kpiDashWinRate">0%</div>
+            <div class="dash-kpi-label">Tasa de Conversión / Cierre</div>
+          </div>
+
+        </div>
+
+        <!-- Dashboard Split Widgets -->
+        <div class="dashboard-widgets-grid">
+          
+          <!-- Left Widget: Monthly Sales Target & Conversion Funnel -->
+          <div class="dash-widget">
+            <div class="dash-widget-header">
+              <h3><span>🎯</span> <span>Objetivo de Ventas del Mes</span></h3>
+              <span id="goalPercentText" style="font-size: 12px; font-weight: 700; color: var(--accent-primary);">0% alcanzado</span>
+            </div>
+
+            <div class="goal-progress-box">
+              <div class="goal-info-row">
+                <span class="goal-current-text" id="goalCurrentAmount">$0</span>
+                <span class="goal-target-text">Meta Mensual: <strong id="goalTargetAmount">$5,000</strong></span>
+              </div>
+              <div style="height: 8px; background: var(--crm-bg-surface-elevated); border-radius: var(--radius-full); overflow: hidden;">
+                <div id="goalBarFill" style="height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-success) 100%); transition: width 0.8s var(--ease-spring);"></div>
+              </div>
+            </div>
+
+            <h4 style="font-size: 13.5px; font-weight: 700; margin-bottom: 12px; color: var(--text-secondary);">Embudo de Conversión Comercial</h4>
+            <div class="funnel-steps">
+              <div class="funnel-step">
+                <span class="funnel-step-name">📥 Prospectos</span>
+                <div class="funnel-bar-wrapper">
+                  <div class="funnel-bar-fill" id="funnelNewBar" style="width: 100%; background: rgba(56, 189, 248, 0.4);"></div>
+                  <span class="funnel-count-tag">0</span>
+                </div>
+              </div>
+
+              <div class="funnel-step">
+                <span class="funnel-step-name">📞 Contactados</span>
+                <div class="funnel-bar-wrapper">
+                  <div class="funnel-bar-fill" id="funnelContactedBar" style="width: 50%; background: rgba(99, 102, 241, 0.4);"></div>
+                  <span class="funnel-count-tag">0</span>
+                </div>
+              </div>
+
+              <div class="funnel-step">
+                <span class="funnel-step-name">🤝 En Propuesta</span>
+                <div class="funnel-bar-wrapper">
+                  <div class="funnel-bar-fill" id="funnelProposalBar" style="width: 25%; background: rgba(245, 158, 11, 0.4);"></div>
+                  <span class="funnel-count-tag">0</span>
+                </div>
+              </div>
+
+              <div class="funnel-step">
+                <span class="funnel-step-name">🏆 Ganados (Cierre)</span>
+                <div class="funnel-bar-wrapper">
+                  <div class="funnel-bar-fill" id="funnelWonBar" style="width: 10%; background: rgba(16, 185, 129, 0.6);"></div>
+                  <span class="funnel-count-tag">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Widget: Live Activity Feed -->
+          <div class="dash-widget">
+            <div class="dash-widget-header">
+              <h3><span>⚡</span> <span>Actividad Reciente en Vivo</span></h3>
+            </div>
+            <div class="activity-feed-list" id="dashActivityFeed">
+              <div style="text-align: center; color: var(--text-muted); padding: 20px;">Cargando actividad...</div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- SECTION 2: PIPELINE KANBAN BOARD -->
+      <!-- ========================================================== -->
+      <section class="view-section" id="view-pipeline">
         <div class="pipeline-toolbar">
           <div class="search-filter-box">
             <div class="search-input-wrapper">
@@ -121,248 +296,251 @@
           </div>
         </div>
 
-        <!-- Horizontal Scrollable Kanban Board -->
         <div class="kanban-board" id="kanbanBoard"></div>
       </section>
 
       <!-- ========================================================== -->
-      <!-- VIEW 2: GOOGLE MAPS PROSPECT FINDER & SCRAPER -->
+      <!-- SECTION 3: BÚSQUEDA DE GOOGLE MAPS & MODO CALLE -->
       <!-- ========================================================== -->
       <section class="view-section" id="view-scraper">
-        <div class="scraper-hero-card">
-          <h3><span>🗺️</span> <span>Buscador y Scraper de Google Maps</span></h3>
-          <p>Encuentra en segundos todos los negocios de una zona que **no tienen página web** (para regalarles landing con GBP) o que tienen **pocas reseñas** (para venderles tarjetas NFC).</p>
-
-          <form id="scraperForm">
-            <div class="scraper-form-grid">
-              <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label" for="searchNiche">Nicho o Rubro del Negocio</label>
-                <input type="text" id="searchNiche" class="form-input" placeholder="Ej: Talleres Mecánicos, Dentistas, Restaurantes..." required>
-              </div>
-
-              <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label" for="searchLocation">Ciudad o Localidad</label>
-                <input type="text" id="searchLocation" class="form-input" placeholder="Ej: Valencia, Venezuela, Caracas, Madrid..." required>
-              </div>
-
-              <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label" for="searchLimit">Cantidad</label>
-                <select id="searchLimit" class="form-select">
-                  <option value="25" selected>25 Negocios</option>
-                  <option value="50">50 Negocios (Búsqueda Completa)</option>
-                  <option value="10">10 Negocios</option>
-                </select>
-              </div>
-
-              <button type="submit" class="btn btn-primary btn-lg" id="btnStartScraping">
-                🔍 Buscar en Todo el Rango
-              </button>
-            </div>
-          </form>
-
-          <div class="quick-niche-chips">
-            <span style="font-size: 11.5px; color: var(--text-muted); align-self: center; margin-right: 4px;">Sugerencias rápidas:</span>
-            <button class="niche-chip" data-niche="Talleres Mecánicos">🚗 Talleres Mecánicos</button>
-            <button class="niche-chip" data-niche="Clínicas Dentales">🦷 Clínicas Dentales</button>
-            <button class="niche-chip" data-niche="Restaurantes y Bares">🍕 Restaurantes & Bares</button>
-            <button class="niche-chip" data-niche="Salones de Belleza">💅 Salones de Belleza</button>
-            <button class="niche-chip" data-niche="Gimnasios">🏋️ Gimnasios</button>
-          </div>
-        </div>
-
-        <!-- Floating Batch Action Bar -->
-        <div class="batch-action-bar" id="batchActionBar">
-          <div class="batch-info" id="selectedCountText">0 prospectos seleccionados</div>
-          <button class="btn btn-primary btn-sm" id="btnImportSelected">
-            📥 Importar Seleccionados a Pipeline
+        
+        <!-- Sub-Tabs Navigation between Scraper and Street Mode -->
+        <div class="subtabs-nav">
+          <button class="subtab-btn active" data-subtab="maps">
+            <span>🗺️</span> <span>Buscador Google Maps</span>
+          </button>
+          <button class="subtab-btn" data-subtab="street">
+            <span>📱</span> <span>Modo Calle & Venta NFC</span>
           </button>
         </div>
 
-        <!-- Results Toolbar -->
-        <div class="results-header-bar" id="scraperResultsBar" style="display: none;">
-          <div class="results-count-text">
-            <span>Resultados: <strong id="totalFoundCount">0</strong> prospectos</span>
-            <span>·</span>
-            <span>Alta Oportunidad: <strong id="highOppCount" style="color: var(--accent-danger);">0</strong></span>
+        <!-- TAB A: GOOGLE MAPS SCRAPER -->
+        <div id="tab-maps-scraper">
+          <div class="scraper-hero-card">
+            <h3><span>🗺️</span> <span>Buscador y Scraper de Google Maps</span></h3>
+            <p>Encuentra en segundos todos los negocios de una zona que **no tienen página web** (para regalarles landing con GBP) o que tienen **pocas reseñas** (para venderles tarjetas NFC).</p>
+
+            <form id="scraperForm">
+              <div class="scraper-form-grid">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label" for="searchNiche">Nicho o Rubro del Negocio</label>
+                  <input type="text" id="searchNiche" class="form-input" placeholder="Ej: Talleres Mecánicos, Dentistas, Restaurantes..." required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label" for="searchLocation">Ciudad o Localidad</label>
+                  <input type="text" id="searchLocation" class="form-input" placeholder="Ej: Valencia, Venezuela, Caracas, Madrid..." required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label" for="searchLimit">Cantidad</label>
+                  <select id="searchLimit" class="form-select">
+                    <option value="25" selected>25 Negocios</option>
+                    <option value="50">50 Negocios (Búsqueda Completa)</option>
+                    <option value="10">10 Negocios</option>
+                  </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg" id="btnStartScraping">
+                  🔍 Buscar en Todo el Rango
+                </button>
+              </div>
+            </form>
+
+            <div class="quick-niche-chips">
+              <span style="font-size: 11.5px; color: var(--text-muted); align-self: center; margin-right: 4px;">Sugerencias:</span>
+              <button class="niche-chip" data-niche="Talleres Mecánicos">🚗 Talleres Mecánicos</button>
+              <button class="niche-chip" data-niche="Clínicas Dentales">🦷 Clínicas Dentales</button>
+              <button class="niche-chip" data-niche="Restaurantes y Bares">🍕 Restaurantes & Bares</button>
+              <button class="niche-chip" data-niche="Salones de Belleza">💅 Salones de Belleza</button>
+              <button class="niche-chip" data-niche="Gimnasios">🏋️ Gimnasios</button>
+            </div>
           </div>
 
-          <div class="results-actions-group">
-            <!-- View Mode Switcher -->
-            <div class="view-mode-toggle">
-              <button class="view-btn active" id="btnViewTable" title="Vista Tabla Compacta (Filas)">
-                <span>📑</span> <span>Filas</span>
-              </button>
-              <button class="view-btn" id="btnViewGrid" title="Vista Tarjetas">
-                <span>🗂️</span> <span>Tarjetas</span>
-              </button>
-            </div>
-
-            <button class="btn btn-primary btn-sm" id="btnBulkImport">
-              📥 Importar Todos a Pipeline
+          <!-- Floating Batch Action Bar -->
+          <div class="batch-action-bar" id="batchActionBar">
+            <div class="batch-info" id="selectedCountText">0 prospectos seleccionados</div>
+            <button class="btn btn-primary btn-sm" id="btnImportSelected">
+              📥 Importar Seleccionados a Pipeline
             </button>
           </div>
-        </div>
 
-        <!-- Loading State -->
-        <div id="scraperLoading" style="display: none; text-align: center; padding: 60px 20px;">
-          <div style="font-size: 32px; animation: spin 1s infinite linear; display: inline-block;">⚙️</div>
-          <div style="margin-top: 14px; font-weight: 700; font-size: 15px;">Escaneando Google Maps en todas las zonas de la localidad...</div>
-          <div style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Extrayendo negocios, diagnosticando sitios web y revisando calificaciones.</div>
-        </div>
-
-        <!-- 1. COMPACT TABLE / ROW VIEW (Default) -->
-        <div class="prospects-table-container" id="prospectsTableContainer" style="display: none;">
-          <table class="prospects-table">
-            <thead>
-              <tr>
-                <th style="width: 32px;">
-                  <input type="checkbox" class="table-checkbox" id="selectAllProspects" title="Seleccionar todos">
-                </th>
-                <th>Negocio / Rubro</th>
-                <th>Zona / Dirección</th>
-                <th>WhatsApp / Teléfono</th>
-                <th>Sitio Web</th>
-                <th>Reseñas</th>
-                <th>Score</th>
-                <th style="text-align: right;">Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="prospectsTableBody"></tbody>
-          </table>
-        </div>
-
-        <!-- 2. GRID / CARD VIEW (Alternative) -->
-        <div class="prospects-grid" id="prospectsGrid"></div>
-
-        <!-- Initial Empty State -->
-        <div id="scraperEmptyState" style="text-align: center; padding: 60px 20px; color: var(--text-muted); background: var(--crm-bg-sidebar); border-radius: var(--radius-lg); border: 1px dashed var(--crm-border-subtle);">
-          <div style="font-size: 40px; margin-bottom: 12px;">🗺️</div>
-          <h4 style="font-size: 16px; color: var(--text-primary); margin-bottom: 6px;">Listo para prospectar en todo el rango de tu ciudad</h4>
-          <p style="font-size: 13px; max-width: 480px; margin: 0 auto;">Ingresa un nicho y ciudad arriba para desplegar hasta 50 clientes potenciales en una vista compacta y rápida por filas.</p>
-        </div>
-      </section>
-
-      <!-- ========================================================== -->
-      <!-- VIEW 3: MODO CALLE (MOBILE ERGONOMIC & NFC SALES) -->
-      <!-- ========================================================== -->
-      <section class="view-section" id="view-street">
-        <div class="street-mode-container">
-
-          <div class="street-badge-banner">
-            <div class="street-banner-info">
-              <h3><span>📱</span> <span>Modo Calle & Captura en 15 Segundos</span></h3>
-              <p>Optimizado para visitar negocios en frío y registrar venta de tarjetas NFC.</p>
+          <!-- Results Toolbar -->
+          <div class="results-header-bar" id="scraperResultsBar" style="display: none;">
+            <div class="results-count-text">
+              <span>Resultados: <strong id="totalFoundCount">0</strong> prospectos</span>
+              <span>·</span>
+              <span>Alta Oportunidad: <strong id="highOppCount" style="color: var(--accent-danger);">0</strong></span>
             </div>
-            <span style="font-size: 24px;">🏃‍♂️</span>
-          </div>
 
-          <!-- Mini Street Stats -->
-          <div class="street-mini-stats">
-            <div class="street-stat-box">
-              <div class="street-stat-num" id="streetNfcSoldToday">0</div>
-              <div class="street-stat-lbl">NFC Vendidas</div>
-            </div>
-            <div class="street-stat-box">
-              <div class="street-stat-num" id="streetRevenueToday" style="color: var(--accent-success-text);">$0</div>
-              <div class="street-stat-lbl">Recaudado</div>
-            </div>
-            <div class="street-stat-box">
-              <div class="street-stat-num" id="streetCardsInBag" style="color: var(--accent-warning-text);">15</div>
-              <div class="street-stat-lbl">En Mochila</div>
+            <div class="results-actions-group">
+              <div class="view-mode-toggle">
+                <button class="view-btn active" id="btnViewTable" title="Vista Tabla Compacta (Filas)">
+                  <span>📑</span> <span>Filas</span>
+                </button>
+                <button class="view-btn" id="btnViewGrid" title="Vista Tarjetas">
+                  <span>🗂️</span> <span>Tarjetas</span>
+                </button>
+              </div>
+
+              <button class="btn btn-primary btn-sm" id="btnBulkImport">
+                📥 Importar Todos a Pipeline
+              </button>
             </div>
           </div>
 
-          <!-- Fast Capture Card Form -->
-          <div class="street-capture-card">
-            <form id="streetCaptureForm">
-              
-              <div class="form-group">
-                <label class="form-label" for="streetBizName">Nombre del Local / Negocio *</label>
-                <input type="text" id="streetBizName" class="form-input" placeholder="Ej: Pizzería Roma, Barbería King" required>
-              </div>
+          <!-- Loading State -->
+          <div id="scraperLoading" style="display: none; text-align: center; padding: 60px 20px;">
+            <div style="font-size: 32px; animation: spin 1s infinite linear; display: inline-block;">⚙️</div>
+            <div style="margin-top: 14px; font-weight: 700; font-size: 15px;">Escaneando Google Maps en todas las zonas de la localidad...</div>
+            <div style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Extrayendo negocios, diagnosticando sitios web y revisando calificaciones.</div>
+          </div>
 
-              <div class="fast-form-grid">
+          <!-- Compact Table View -->
+          <div class="prospects-table-container" id="prospectsTableContainer" style="display: none;">
+            <table class="prospects-table">
+              <thead>
+                <tr>
+                  <th style="width: 32px;">
+                    <input type="checkbox" class="table-checkbox" id="selectAllProspects" title="Seleccionar todos">
+                  </th>
+                  <th>Negocio / Rubro</th>
+                  <th>Zona / Dirección</th>
+                  <th>WhatsApp / Teléfono</th>
+                  <th>Sitio Web</th>
+                  <th>Reseñas</th>
+                  <th>Score</th>
+                  <th style="text-align: right;">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="prospectsTableBody"></tbody>
+            </table>
+          </div>
+
+          <!-- Grid View -->
+          <div class="prospects-grid" id="prospectsGrid"></div>
+
+          <!-- Empty State -->
+          <div id="scraperEmptyState" style="text-align: center; padding: 60px 20px; color: var(--text-muted); background: var(--crm-bg-sidebar); border-radius: var(--radius-lg); border: 1px dashed var(--crm-border-subtle);">
+            <div style="font-size: 40px; margin-bottom: 12px;">🗺️</div>
+            <h4 style="font-size: 16px; color: var(--text-primary); margin-bottom: 6px;">Listo para prospectar en todo el rango de tu ciudad</h4>
+            <p style="font-size: 13px; max-width: 480px; margin: 0 auto;">Ingresa un nicho y ciudad arriba para desplegar hasta 50 clientes potenciales en una vista compacta y rápida por filas.</p>
+          </div>
+        </div>
+
+        <!-- TAB B: MODO CALLE (NFC VISITS) -->
+        <div id="tab-street-mode" style="display: none;">
+          <div class="street-mode-container">
+
+            <div class="street-badge-banner">
+              <div class="street-banner-info">
+                <h3><span>📱</span> <span>Modo Calle & Captura en 15 Segundos</span></h3>
+                <p>Optimizado para visitar negocios en frío y registrar venta de tarjetas NFC.</p>
+              </div>
+              <span style="font-size: 24px;">🏃‍♂️</span>
+            </div>
+
+            <div class="street-mini-stats">
+              <div class="street-stat-box">
+                <div class="street-stat-num" id="streetNfcSoldToday">0</div>
+                <div class="street-stat-lbl">NFC Vendidas</div>
+              </div>
+              <div class="street-stat-box">
+                <div class="street-stat-num" id="streetRevenueToday" style="color: var(--accent-success-text);">$0</div>
+                <div class="street-stat-lbl">Recaudado</div>
+              </div>
+              <div class="street-stat-box">
+                <div class="street-stat-num" id="streetCardsInBag" style="color: var(--accent-warning-text);">15</div>
+                <div class="street-stat-lbl">En Mochila</div>
+              </div>
+            </div>
+
+            <div class="street-capture-card">
+              <form id="streetCaptureForm">
                 <div class="form-group">
-                  <label class="form-label" for="streetContactName">Nombre del Dueño / Encargado</label>
-                  <input type="text" id="streetContactName" class="form-input" placeholder="Ej: Carlos / Mario">
+                  <label class="form-label" for="streetBizName">Nombre del Local / Negocio *</label>
+                  <input type="text" id="streetBizName" class="form-input" placeholder="Ej: Pizzería Roma, Barbería King" required>
+                </div>
+
+                <div class="fast-form-grid">
+                  <div class="form-group">
+                    <label class="form-label" for="streetContactName">Nombre del Dueño / Encargado</label>
+                    <input type="text" id="streetContactName" class="form-input" placeholder="Ej: Carlos / Mario">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="streetPhone">WhatsApp *</label>
+                    <input type="tel" id="streetPhone" class="form-input" placeholder="Ej: 0414... o +34..." required>
+                  </div>
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label" for="streetPhone">WhatsApp *</label>
-                  <input type="tel" id="streetPhone" class="form-input" placeholder="Ej: +34 612 345 678 o 0414..." required>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="streetAddress">Ubicación / Dirección</label>
-                <div class="input-with-action">
-                  <input type="text" id="streetAddress" class="form-input" placeholder="Calle, Centro Comercial, Local...">
-                  <button type="button" class="btn-gps" id="btnGetGps">📍 GPS</button>
-                </div>
-              </div>
-
-              <!-- Deal Type Selector -->
-              <div class="form-group">
-                <label class="form-label">Resultado de la Visita</label>
-                <div class="offer-selector-grid">
-                  <div class="offer-option-card selected" data-offer="nfc_sale">
-                    <div class="offer-icon">💳</div>
-                    <div class="offer-title">Tarjeta NFC Vendida</div>
-                    <div class="offer-price">$35.00</div>
-                  </div>
-                  <div class="offer-option-card" data-offer="gbp_landing">
-                    <div class="offer-icon">🌐</div>
-                    <div class="offer-title">Interesado GBP + Landing</div>
-                    <div class="offer-price">$250.00</div>
-                  </div>
-                  <div class="offer-option-card" data-offer="web_redesign">
-                    <div class="offer-icon">⚡</div>
-                    <div class="offer-title">Interesado Rediseño Web</div>
-                    <div class="offer-price">$450.00</div>
+                  <label class="form-label" for="streetAddress">Ubicación / Dirección</label>
+                  <div class="input-with-action">
+                    <input type="text" id="streetAddress" class="form-input" placeholder="Calle, Centro Comercial, Local...">
+                    <button type="button" class="btn-gps" id="btnGetGps">📍 GPS</button>
                   </div>
                 </div>
-              </div>
 
-              <!-- NFC Sale Detail Box (Active by default) -->
-              <div class="nfc-sale-details-box" id="streetNfcBox">
-                <h4><span>💵</span> <span>Registro de Cobro de Tarjeta NFC</span></h4>
-                <div class="fast-form-grid" style="margin-bottom: 12px;">
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label" for="streetNfcPrice">Precio Cobrado ($)</label>
-                    <input type="number" id="streetNfcPrice" class="form-input" value="35.00" step="1">
-                  </div>
-                  <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label">Método de Pago</label>
-                    <div class="payment-method-pills">
-                      <span class="payment-pill selected" data-payment="efectivo">Efectivo</span>
-                      <span class="payment-pill" data-payment="transferencia">Transferencia</span>
-                      <span class="payment-pill" data-payment="zelle">Zelle</span>
-                      <span class="payment-pill" data-payment="pago_movil">Pago Móvil</span>
+                <div class="form-group">
+                  <label class="form-label">Resultado de la Visita</label>
+                  <div class="offer-selector-grid">
+                    <div class="offer-option-card selected" data-offer="nfc_sale">
+                      <div class="offer-icon">💳</div>
+                      <div class="offer-title">Tarjeta NFC Vendida</div>
+                      <div class="offer-price">$35.00</div>
+                    </div>
+                    <div class="offer-option-card" data-offer="gbp_landing">
+                      <div class="offer-icon">🌐</div>
+                      <div class="offer-title">Interesado GBP + Landing</div>
+                      <div class="offer-price">$250.00</div>
+                    </div>
+                    <div class="offer-option-card" data-offer="web_redesign">
+                      <div class="offer-icon">⚡</div>
+                      <div class="offer-title">Interesado Rediseño Web</div>
+                      <div class="offer-price">$450.00</div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="form-group">
-                <label class="form-label" for="streetNotes">Nota Rápida</label>
-                <input type="text" id="streetNotes" class="form-input" placeholder="Ej: Pedirle foto del logo el lunes, le gustó la tarjeta...">
-              </div>
+                <div class="nfc-sale-details-box" id="streetNfcBox">
+                  <h4><span>💵</span> <span>Registro de Cobro de Tarjeta NFC</span></h4>
+                  <div class="fast-form-grid" style="margin-bottom: 12px;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label class="form-label" for="streetNfcPrice">Precio Cobrado ($)</label>
+                      <input type="number" id="streetNfcPrice" class="form-input" value="35.00" step="1">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label class="form-label">Método de Pago</label>
+                      <div class="payment-method-pills">
+                        <span class="payment-pill selected" data-payment="efectivo">Efectivo</span>
+                        <span class="payment-pill" data-payment="transferencia">Transferencia</span>
+                        <span class="payment-pill" data-payment="zelle">Zelle</span>
+                        <span class="payment-pill" data-payment="pago_movil">Pago Móvil</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-              <button type="submit" class="btn btn-whatsapp btn-lg" id="btnStreetSave" style="width: 100%; margin-top: 10px;">
-                <span>💬</span> <span>Guardar y Abrir WhatsApp</span>
-              </button>
-            </form>
+                <div class="form-group">
+                  <label class="form-label" for="streetNotes">Nota Rápida</label>
+                  <input type="text" id="streetNotes" class="form-input" placeholder="Ej: Pedirle logo el lunes...">
+                </div>
+
+                <button type="submit" class="btn btn-whatsapp btn-lg" id="btnStreetSave" style="width: 100%; margin-top: 10px;">
+                  <span>💬</span> <span>Guardar y Abrir WhatsApp</span>
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- ========================================================== -->
-      <!-- VIEW 4: FACEBOOK ADS & WEBHOOKS -->
+      <!-- SECTION 4: FACEBOOK ADS & WEBHOOKS -->
       <!-- ========================================================== -->
       <section class="view-section" id="view-webhooks">
         <div class="analytics-sections-grid">
           
-          <!-- Webhook Config Card -->
           <div class="analytics-card">
             <div class="analytics-card-header">
               <h3><span>⚡</span> <span>Conector de Facebook Lead Ads</span></h3>
@@ -381,7 +559,7 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label">Verify Token (Para Meta Developers)</label>
+              <label class="form-label">Verify Token</label>
               <div class="input-with-action">
                 <input type="text" id="webhookVerifyTokenDisplay" class="form-input" readonly value="wh_sec_crm_landing_2026">
                 <button type="button" class="btn btn-secondary btn-sm" id="btnCopyVerifyToken">📋 Copiar</button>
@@ -397,7 +575,6 @@
             </div>
           </div>
 
-          <!-- Webhook Simulator Card -->
           <div class="analytics-card">
             <div class="analytics-card-header">
               <h3><span>🧪</span> <span>Simulador de Leads de Facebook Ads</span></h3>
@@ -420,7 +597,7 @@
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="simPhone">Teléfono / WhatsApp</label>
-                  <input type="tel" id="simPhone" class="form-input" value="+34 654 321 987">
+                  <input type="tel" id="simPhone" class="form-input" value="+58 414 1234567">
                 </div>
               </div>
 
@@ -444,18 +621,17 @@
       </section>
 
       <!-- ========================================================== -->
-      <!-- VIEW 5: ANALYTICS & SALES REPORTS -->
+      <!-- SECTION 5: REPORTE DE VENTAS (AL FINAL) -->
       <!-- ========================================================== -->
       <section class="view-section" id="view-analytics">
         
-        <!-- KPI Summary Cards -->
         <div class="analytics-kpi-grid">
           <div class="kpi-card kpi-green">
             <div class="kpi-header">
               <span class="kpi-title">Ingresos Totales</span>
               <span class="kpi-icon">💰</span>
             </div>
-            <div class="kpi-value" id="kpiTotalRevenue">$0</div>
+            <div class="kpi-value" id="kpiTotalRevenue">$0.00</div>
             <div class="kpi-subtext">Facturación cobrada acumulada</div>
           </div>
 
@@ -464,7 +640,7 @@
               <span class="kpi-title">Pipeline Activo</span>
               <span class="kpi-icon">📈</span>
             </div>
-            <div class="kpi-value" id="kpiPipelineValue">$0</div>
+            <div class="kpi-value" id="kpiPipelineValue">$0.00</div>
             <div class="kpi-subtext">Valor total de tratos en curso</div>
           </div>
 
@@ -473,8 +649,8 @@
               <span class="kpi-title">Ventas Tarjetas NFC</span>
               <span class="kpi-icon">💳</span>
             </div>
-            <div class="kpi-value" id="kpiNfcRevenue">$0</div>
-            <div class="kpi-subtext">Facturación exclusiva de chips NFC</div>
+            <div class="kpi-value" id="kpiNfcRevenue">$0.00</div>
+            <div class="kpi-subtext">Facturación de chips NFC</div>
           </div>
 
           <div class="kpi-card kpi-amber">
@@ -483,13 +659,11 @@
               <span class="kpi-icon">🎯</span>
             </div>
             <div class="kpi-value" id="kpiWinRate">0%</div>
-            <div class="kpi-subtext">Efectividad de conversión comercial</div>
+            <div class="kpi-subtext">Efectividad de conversión</div>
           </div>
         </div>
 
-        <!-- Breakdown Section -->
         <div class="analytics-sections-grid">
-          
           <div class="analytics-card">
             <div class="analytics-card-header">
               <h3><span>💼</span> <span>Ingresos por Tipo de Servicio</span></h3>
@@ -503,10 +677,8 @@
             </div>
             <div class="breakdown-list" id="leadsBySourceList"></div>
           </div>
-
         </div>
 
-        <!-- Recent Sales & Export Table -->
         <div class="analytics-card">
           <div class="analytics-card-header">
             <h3><span>📋</span> <span>Histórico de Ventas y Cierres</span></h3>
@@ -539,17 +711,17 @@
 
     <!-- MOBILE BOTTOM NAVIGATION BAR -->
     <nav class="bottom-nav">
-      <a class="bottom-nav-item active" data-view="pipeline">
+      <a class="bottom-nav-item active" data-view="dashboard">
         <span class="icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a class="bottom-nav-item" data-view="pipeline">
+        <span class="icon">📋</span>
         <span>Pipeline</span>
       </a>
       <a class="bottom-nav-item" data-view="scraper">
         <span class="icon">🗺️</span>
-        <span>Maps</span>
-      </a>
-      <a class="bottom-nav-item" data-view="street">
-        <span class="icon">📱</span>
-        <span>Calle NFC</span>
+        <span>Maps & Calle</span>
       </a>
       <a class="bottom-nav-item" data-view="webhooks">
         <span class="icon">⚡</span>
@@ -557,7 +729,7 @@
       </a>
       <a class="bottom-nav-item" data-view="analytics">
         <span class="icon">📈</span>
-        <span>Reportes</span>
+        <span>Reporte</span>
       </a>
     </nav>
 
@@ -659,7 +831,7 @@
 
           <div class="form-group">
             <label class="form-label" for="leadNotes">Notas y Acuerdos</label>
-            <textarea id="leadNotes" class="form-textarea" placeholder="Detalles de la conversación, objeciones, preferencias..."></textarea>
+            <textarea id="leadNotes" class="form-textarea" placeholder="Detalles de la conversación, acuerdos..."></textarea>
           </div>
         </div>
 
@@ -680,7 +852,7 @@
         <div>
           <h3 style="font-size: 16px;">💬 Guion de Venta para WhatsApp</h3>
           <div style="font-size: 12px; color: var(--text-muted);">
-            Para: <strong id="scriptBizName" style="color: var(--accent-primary);">Negocio</strong> (<span id="scriptPhone">+34...</span>)
+            Para: <strong id="scriptBizName" style="color: var(--accent-primary);">Negocio</strong> (<span id="scriptPhone">+58...</span>)
           </div>
         </div>
         <button class="modal-close">&times;</button>
@@ -708,11 +880,11 @@
     </div>
   </div>
 
-  <!-- Toast Container -->
   <div id="toastContainer" class="toast-container"></div>
 
   <!-- Scripts -->
   <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
   <script src="/js/pipeline.js"></script>
   <script src="/js/scraper.js"></script>
   <script src="/js/street-mode.js"></script>

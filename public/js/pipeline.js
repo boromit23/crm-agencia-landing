@@ -56,6 +56,9 @@ const Pipeline = {
   },
 
   renderCards() {
+    const badge = document.getElementById('pipelineCountBadge');
+    if (badge) badge.innerText = this.leads.length;
+
     // Reset columns
     this.stages.forEach(stage => {
       const container = document.getElementById(`cards-${stage.id}`);

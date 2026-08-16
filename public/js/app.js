@@ -1,21 +1,53 @@
-// Main Application Controller & View Router - Attio / Linear / Dribbble 2026
+// Main Application Controller & View Router - Hubly CRM (2026 Edition)
 
 const App = {
-  currentView: 'pipeline',
+  currentView: 'dashboard',
+  theme: 'dark',
 
   init() {
-    console.log('🚀 Iniciando GrowthCRM Agencia Digital (UI 2026 Enhanced)...');
+    console.log('🚀 Iniciando GrowthCRM (Hubly Edition 2026)...');
+    this.initTheme();
     this.setupRouting();
     this.setupModals();
     this.setupShortcuts();
+    this.setupSubTabs();
     this.registerPWA();
 
-    // Initialize modules
+    // Initialize submodules
+    if (window.Dashboard) window.Dashboard.init();
     if (window.Pipeline) window.Pipeline.init();
     if (window.ScraperUI) window.ScraperUI.init();
     if (window.StreetMode) window.StreetMode.init();
     if (window.WebhooksUI) window.WebhooksUI.init();
     if (window.Analytics) window.Analytics.init();
+  },
+
+  initTheme() {
+    const savedTheme = localStorage.getItem('growthcrm_theme') || 'dark';
+    this.setTheme(savedTheme);
+
+    // Bind theme switch buttons
+    document.querySelectorAll('.theme-switch-btn').forEach(btn => {
+      btn.addEventListener('click', () => this.toggleTheme());
+    });
+  },
+
+  setTheme(theme) {
+    this.theme = theme;
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('growthcrm_theme', theme);
+
+    // Update icon on buttons
+    document.querySelectorAll('.theme-switch-btn').forEach(btn => {
+      btn.innerText = theme === 'dark' ? '☀️' : '🌙';
+      btn.title = theme === 'dark' ? 'Cambiar a Modo Claro' : 'Cambiar a Modo Oscuro';
+    });
+  },
+
+  toggleTheme() {
+    const newTheme = this.theme === 'dark' ? 'light' : 'dark';
+    this.setTheme(newTheme);
+    API.toast(`Modo ${newTheme === 'dark' ? 'Oscuro' : 'Claro'} activado`, 'info');
   },
 
   setupRouting() {
@@ -31,10 +63,12 @@ const App = {
       });
     });
 
-    // Check hash in URL or default to pipeline
+    // Check hash in URL or default to dashboard
     const hash = window.location.hash.replace('#', '');
-    if (hash && ['pipeline', 'scraper', 'street', 'webhooks', 'analytics', 'settings'].includes(hash)) {
+    if (hash && ['dashboard', 'pipeline', 'scraper', 'webhooks', 'analytics'].includes(hash)) {
       this.switchView(hash);
+    } else {
+      this.switchView('dashboard');
     }
   },
 
@@ -54,23 +88,48 @@ const App = {
 
     // Update Header Title
     const titleMap = {
+      dashboard: { title: 'Dashboard General', desc: 'Métricas clave, objetivos y rendimiento comercial' },
       pipeline: { title: 'Pipeline de Ventas', desc: 'Gestiona tus prospectos y etapas de cierre' },
-      scraper: { title: 'Buscador de Google Maps', desc: 'Encuentra negocios sin web y con pocas reseñas' },
-      street: { title: 'Modo Calle & Venta NFC', desc: 'Captura rápida en 15s y registro de ventas presenciales' },
-      webhooks: { title: 'Facebook Ads & Webhooks', desc: 'Recepción automática de prospectos desde campañas' },
-      analytics: { title: 'Reportes y Métricas', desc: 'Rendimiento comercial y facturación por canal' }
+      scraper: { title: 'Búsqueda & Modo Calle', desc: 'Scraper de Google Maps y captura rápida de clientes en frío' },
+      webhooks: { title: 'Facebook Ads & Webhooks', desc: 'Recepción automática de prospectos desde campañas de anuncios' },
+      analytics: { title: 'Reporte de Ventas', desc: 'Histórico de transacciones y facturación por servicio' }
     };
 
-    const header = titleMap[viewName] || { title: 'CRM Agencia', desc: '' };
+    const header = titleMap[viewName] || { title: 'GrowthCRM', desc: '' };
     const h2 = document.querySelector('.page-title h2');
     const p = document.querySelector('.page-title p');
     if (h2) h2.innerText = header.title;
     if (p) p.innerText = header.desc;
 
-    // Special module refresh triggers
-    if (viewName === 'analytics' && window.Analytics) window.Analytics.loadMetrics();
-    if (viewName === 'street' && window.StreetMode) window.StreetMode.loadStreetStats();
+    // Refresh active view data
+    if (viewName === 'dashboard' && window.Dashboard) window.Dashboard.loadDashboardData();
     if (viewName === 'pipeline' && window.Pipeline) window.Pipeline.renderCards();
+    if (viewName === 'analytics' && window.Analytics) window.Analytics.loadMetrics();
+    if (viewName === 'scraper' && window.StreetMode) window.StreetMode.loadStreetStats();
+  },
+
+  setupSubTabs() {
+    // Subtabs between Maps Scraper and Street Mode
+    const subtabs = document.querySelectorAll('.subtab-btn');
+    subtabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-subtab');
+        subtabs.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const mapTab = document.getElementById('tab-maps-scraper');
+        const streetTab = document.getElementById('tab-street-mode');
+
+        if (target === 'maps') {
+          if (mapTab) mapTab.style.display = 'block';
+          if (streetTab) streetTab.style.display = 'none';
+        } else if (target === 'street') {
+          if (mapTab) mapTab.style.display = 'none';
+          if (streetTab) streetTab.style.display = 'block';
+          if (window.StreetMode) window.StreetMode.loadStreetStats();
+        }
+      });
+    });
   },
 
   setupShortcuts() {
@@ -86,7 +145,6 @@ const App = {
       }
     });
 
-    // Click on Omnibox Container triggers input focus
     const omniContainer = document.getElementById('globalOmniboxContainer');
     if (omniContainer) {
       omniContainer.addEventListener('click', () => {
@@ -97,14 +155,12 @@ const App = {
   },
 
   setupModals() {
-    // Close modal handlers
     document.querySelectorAll('.modal-close, .btn-modal-cancel').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
       });
     });
 
-    // Close when clicking outside modal box
     document.querySelectorAll('.modal-overlay').forEach(modal => {
       modal.addEventListener('click', (e) => {
         if (e.target === modal) {
@@ -113,14 +169,12 @@ const App = {
       });
     });
 
-    // Close on Escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
       }
     });
 
-    // Lead Form submit handler
     const leadForm = document.getElementById('leadForm');
     if (leadForm) {
       leadForm.addEventListener('submit', (e) => Pipeline.handleFormSubmit(e));
