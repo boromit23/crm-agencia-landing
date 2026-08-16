@@ -195,3 +195,28 @@
   color: #fff;
   border-color: rgba(244, 63, 94, 0.4);
 }
+
+@media (max-width: 420px) {
+  .auth-lock-card {
+    padding: 24px 18px;
+    border-radius: 14px;
+  }
+  .auth-logo-badge {
+    width: 46px;
+    height: 46px;
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+  .auth-lock-card h2 {
+    font-size: 18px;
+  }
+  .pin-input-field {
+    font-size: 18px;
+    padding: 11px;
+    letter-spacing: 0.25em;
+  }
+  .numpad-btn {
+    padding: 10px 0;
+    font-size: 16px;
+  }
+}

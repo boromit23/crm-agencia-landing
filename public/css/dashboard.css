@@ -314,3 +314,83 @@
     align-items: flex-start;
   }
 }
+
+/* Tablet Layout (641px - 900px) */
+@media (max-width: 900px) and (min-width: 641px) {
+  .dashboard-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+/* Smartphone Layout (<= 640px) */
+@media (max-width: 640px) {
+  .dashboard-hero-banner {
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+
+  .dashboard-greeting h2 {
+    font-size: 16px;
+  }
+
+  .dashboard-greeting p {
+    font-size: 12px;
+  }
+
+  .dashboard-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .dash-kpi-card {
+    padding: 12px;
+    border-radius: var(--radius-md);
+  }
+
+  .dash-kpi-head {
+    margin-bottom: 8px;
+  }
+
+  .dash-kpi-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+    border-radius: 6px;
+  }
+
+  .dash-kpi-trend {
+    font-size: 9.5px;
+    padding: 1px 5px;
+  }
+
+  .dash-kpi-value {
+    font-size: 18px;
+    margin-bottom: 2px;
+  }
+
+  .dash-kpi-label {
+    font-size: 10.5px;
+    line-height: 1.25;
+  }
+
+  .dash-widget {
+    padding: 16px;
+    border-radius: var(--radius-md);
+  }
+
+  .goal-progress-box {
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+
+  .funnel-step {
+    font-size: 11.5px;
+  }
+
+  .funnel-step-name {
+    width: 105px;
+    font-size: 11px;
+  }
+}

@@ -397,4 +397,30 @@
   .scraper-form-grid {
     grid-template-columns: 1fr;
   }
+  .results-header-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .results-actions-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 640px) {
+  .scraper-hero-card {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .quick-niche-chips {
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .batch-action-bar {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+    text-align: center;
+  }
 }

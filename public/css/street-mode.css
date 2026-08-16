@@ -362,8 +362,39 @@
   border-color: var(--accent-primary);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .fast-form-grid, .radar-controls-grid {
     grid-template-columns: 1fr;
+  }
+  .btn-radar-scan {
+    width: 100%;
+    justify-content: center;
+    font-size: 13.5px;
+    padding: 12px;
+  }
+  .street-mini-stats {
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .street-stat-box {
+    padding: 10px 8px;
+  }
+  .street-stat-num {
+    font-size: 16px;
+  }
+  .street-stat-lbl {
+    font-size: 10px;
+  }
+  .nearby-biz-top {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .nearby-actions-bar {
+    width: 100%;
+  }
+  .nearby-actions-bar .btn {
+    flex: 1;
+    justify-content: center;
+    font-size: 12px;
   }
 }

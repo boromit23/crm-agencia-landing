@@ -188,3 +188,28 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 640px) {
+  .analytics-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .kpi-card {
+    padding: 14px 12px;
+    border-radius: var(--radius-md);
+  }
+  .kpi-value {
+    font-size: 20px;
+  }
+  .kpi-title {
+    font-size: 10.5px;
+  }
+  .kpi-subtext {
+    font-size: 10.5px;
+  }
+  .analytics-card {
+    padding: 16px;
+    border-radius: var(--radius-md);
+  }
+}
