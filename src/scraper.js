@@ -2,80 +2,169 @@ require('dotenv').config();
 const cheerio = require('cheerio');
 const { db } = require('./db');
 
-// City and Country Area Code Reference
+// City and Country Area Code Reference with Extended Neighborhoods / Zones
 const LOCATION_PHONE_PRESETS = {
   venezuela: { country_code: '+58', mobile_prefixes: ['0414', '0424', '0412', '0416'], landline: '0241' },
-  valencia: { country_code: '+58', mobile_prefixes: ['0414', '0424', '0412'], landline: '0241', zones: ['El Trigal', 'San Diego', 'Naguanagua', 'Los Guayos', 'La Isabelica', 'Prebo', 'Guaparo', 'Av. Bolívar'] },
-  caracas: { country_code: '+58', mobile_prefixes: ['0414', '0424', '0412'], landline: '0212', zones: ['Las Mercedes', 'Chacao', 'El Recreo', 'Altamira', 'Los Palos Grandes', 'La Candelaria', 'Bello Monte'] },
-  maracaibo: { country_code: '+58', mobile_prefixes: ['0414', '0424', '0412'], landline: '0261', zones: ['5 de Julio', 'Bella Vista', 'La Lago', 'San Francisco'] },
-  madrid: { country_code: '+34', mobile_prefixes: ['6', '7'], landline: '91', zones: ['Salamanca', 'Chamberí', 'Centro', 'Retiro', 'Chamartín', 'Alcalá', 'Getafe'] },
-  barcelona: { country_code: '+34', mobile_prefixes: ['6', '7'], landline: '93', zones: ['Eixample', 'Gràcia', 'Sarrià', 'Poblenou', 'Badalona'] },
-  miami: { country_code: '+1', mobile_prefixes: ['305', '786'], landline: '305', zones: ['Brickell', 'Coral Gables', 'Doral', 'Wynwood', 'Kendall'] },
-  bogota: { country_code: '+57', mobile_prefixes: ['300', '310', '320'], landline: '601', zones: ['Chicó', 'Usaquén', 'Chapinero', 'Cedritos'] }
+  valencia: { 
+    country_code: '+58', 
+    mobile_prefixes: ['0414', '0424', '0412'], 
+    landline: '0241', 
+    zones: [
+      'El Trigal', 'San Diego', 'Naguanagua', 'Los Guayos', 'La Isabelica', 
+      'Prebo', 'Guaparo', 'Av. Bolívar Norte', 'Zona Industrial Castillito', 
+      'La Granja', 'Mañongo', 'Tazajal', 'Flor Amarillo', 'Lomas del Este', 
+      'El Viñedo', 'Av. Cedeño', 'Las Chimeneas', 'Paraparal', 'Plaza de Toros',
+      'Santa Rosa', 'Guacara', 'Tocuyito', 'Urb. Guaparo', 'Los Colorados'
+    ] 
+  },
+  caracas: { 
+    country_code: '+58', 
+    mobile_prefixes: ['0414', '0424', '0412'], 
+    landline: '0212', 
+    zones: [
+      'Las Mercedes', 'Chacao', 'El Recreo', 'Altamira', 'Los Palos Grandes', 
+      'La Candelaria', 'Bello Monte', 'San Bernardino', 'El Hatillo', 'La Trinidad', 
+      'Los Cortijos', 'Boleíta', 'La Castellana', 'Catia', 'El Valle', 'Santa Mónica',
+      'Plaza Venezuela', 'Chacaíto', 'La Florida', 'Montalbán', 'El Paraíso'
+    ] 
+  },
+  maracaibo: { 
+    country_code: '+58', 
+    mobile_prefixes: ['0414', '0424', '0412'], 
+    landline: '0261', 
+    zones: ['5 de Julio', 'Bella Vista', 'La Lago', 'San Francisco', 'Delicias', 'Amparo', 'La Limpia', 'Cecilio Acosta', 'Circunvalación 1', 'Indio Mara'] 
+  },
+  barquisimeto: { 
+    country_code: '+58', 
+    mobile_prefixes: ['0414', '0424', '0412'], 
+    landline: '0251', 
+    zones: ['Cabudare', 'Este', 'Centro', 'Av. Lara', 'Av. 20', 'Zona Industrial', 'El Cují', 'Los Leones'] 
+  },
+  madrid: { 
+    country_code: '+34', 
+    mobile_prefixes: ['6', '7'], 
+    landline: '91', 
+    zones: ['Salamanca', 'Chamberí', 'Centro', 'Retiro', 'Chamartín', 'Alcalá', 'Getafe', 'Leganés', 'Moncloa', 'Tetuán', 'Vallecas', 'Pozuelo', 'Alcobendas'] 
+  },
+  barcelona: { 
+    country_code: '+34', 
+    mobile_prefixes: ['6', '7'], 
+    landline: '93', 
+    zones: ['Eixample', 'Gràcia', 'Sarrià', 'Poblenou', 'Badalona', 'Hospitalet', 'Sants', 'Les Corts', 'Sant Andreu', 'Horta'] 
+  },
+  miami: { 
+    country_code: '+1', 
+    mobile_prefixes: ['305', '786'], 
+    landline: '305', 
+    zones: ['Brickell', 'Coral Gables', 'Doral', 'Wynwood', 'Kendall', 'Hialeah', 'Miami Beach', 'Coconut Grove', 'Sunny Isles', 'Aventura', 'Downtown'] 
+  },
+  bogota: { 
+    country_code: '+57', 
+    mobile_prefixes: ['300', '310', '320'], 
+    landline: '601', 
+    zones: ['Chicó', 'Usaquén', 'Chapinero', 'Cedritos', 'Salitre', 'Fontibón', 'Suba', 'Teusaquillo', 'Santa Bárbara'] 
+  }
 };
 
-// Niche name generators for rich local generation
 const NICHE_NAME_TEMPLATES = {
   talleres: [
     'Taller Mecánico Especializado {zone}',
     'AutoServicio Integral {zone}',
     'ElectroAuto & Diagnóstico {zone}',
-    'Frenos, Embragues & Suspensión {city}',
+    'Frenos, Embragues & Suspensión {zone}',
     'Mecánica Rápida & Mantenimiento {zone}',
     'Centro Automotriz Precision {zone}',
     'Taller de Inyección & Motores {zone}',
-    'CarService Total {city}'
+    'CarService Total {zone}',
+    'Mecánica Automotriz Master {zone}',
+    'Servicio Automotriz Los Expertos {zone}',
+    'Taller y Rectificadora {zone}',
+    'MultiServicios Automotrices {zone}',
+    'Alineación, Balanceo & Tren Delantero {zone}',
+    'Taller Electromecánico {zone}',
+    'Especialistas en Cajas & Motores {zone}',
+    'AutoReparaciones Express {zone}',
+    'Taller Mecánico La Solución {zone}',
+    'Centro de Diagnóstico Computarizado {zone}',
+    'Taller de Latonería & Pintura {zone}',
+    'AutoClinic Especialidades {zone}'
   ],
   dentistas: [
     'Clínica Odontológica {zone}',
     'Centro Dental Especialidades {zone}',
-    'OdontoSalud Integral {city}',
+    'OdontoSalud Integral {zone}',
     'Estética Dental & Ortodoncia {zone}',
     'DentalExpress {zone}',
-    'Instituto Odontológico {city}',
-    'Consultorio Dental Sonrisas {zone}'
+    'Instituto Odontológico {zone}',
+    'Consultorio Dental Sonrisas {zone}',
+    'Dental Studio Premium {zone}',
+    'Odontología Avanzada & Implantes {zone}',
+    'Clínica Dental Familiar {zone}',
+    'Centro Maxilofacial & Sonrisas {zone}',
+    'Dental Care Especialistas {zone}',
+    'OdontoGroup Integral {zone}',
+    'Salud Bucal & Estética {zone}',
+    'Unidad Odontológica Especializada {zone}'
   ],
   restaurantes: [
     'Restaurante Asador {zone}',
     'Trattoria & Pizzería {zone}',
     'Café Bistro & Brunch {zone}',
-    'Rincón Gourmet {city}',
+    'Rincón Gourmet {zone}',
     'Hamburguesería & Grill {zone}',
     'Sushi Lounge {zone}',
-    'La Cocina Tradicional {zone}'
+    'La Cocina Tradicional {zone}',
+    'Restaurante Delicias {zone}',
+    'Parrillera Urbana {zone}',
+    'Tacos & Sazón {zone}',
+    'Cafetería & Panadería Artesanal {zone}',
+    'Restaurante & Terraza {zone}',
+    'GastroBar Central {zone}',
+    'Pizzería Napolitana {zone}',
+    'Marisquería & Pescados {zone}'
   ],
   estetica: [
     'Salón de Belleza & Estilo {zone}',
     'Barbería Clásica & Spa {zone}',
     'Centro de Estética & Uñas {zone}',
     'Studio Glamour {zone}',
-    'Spa & Masajes Relajantes {city}'
+    'Spa & Masajes Relajantes {zone}',
+    'Peluquería Unisex {zone}',
+    'Nail Bar & Beauty {zone}',
+    'Centro de Cosmetología & Piel {zone}',
+    'Barber Shop Vintage {zone}',
+    'Beauty Studio Elegance {zone}',
+    'Estética Corporal & Facial {zone}'
   ],
   general: [
     'Servicios Profesionales {zone}',
     'Comercial & Distribuidora {zone}',
-    'Centro de Atención {city}',
+    'Centro de Atención {zone}',
     'Soluciones Integrales {zone}',
-    'Especialistas {zone}'
+    'Especialistas {zone}',
+    'Grupo Empresarial {zone}',
+    'Agencia & Servicios {zone}',
+    'Centro Técnico {zone}'
   ]
 };
 
 class GoogleMapsScraper {
   /**
-   * Search Google Maps prospects by query (niche) and city
+   * Search Google Maps prospects by query (niche) and city, with target count (up to 50)
    */
-  async searchProspects(niche, location, customApiKey = null) {
+  async searchProspects(niche, location, options = {}) {
     const keyword = (niche || 'negocios').trim();
     const city = (location || 'local').trim();
+    const limit = parseInt(options.limit) || 25; // Default to 25 rich results
     const query = `${keyword} en ${city}`;
 
-    console.log(`[Scraper] Buscando prospectos para: "${query}"...`);
+    console.log(`[Scraper] Buscando hasta ${limit} prospectos para: "${query}"...`);
 
-    // 1. If Google Places API Key is present, query it
-    const apiKey = customApiKey || process.env.GOOGLE_PLACES_API_KEY || (await this.getSavedApiKey());
+    // 1. Check if Google Places API Key is present
+    const apiKey = options.apiKey || process.env.GOOGLE_PLACES_API_KEY || (await this.getSavedApiKey());
     if (apiKey) {
       try {
-        const googleResults = await this.searchWithGooglePlacesApi(keyword, city, apiKey);
+        const googleResults = await this.searchWithGooglePlacesApi(keyword, city, apiKey, limit);
         if (googleResults && googleResults.length > 0) {
           return {
             query,
@@ -93,32 +182,41 @@ class GoogleMapsScraper {
     }
 
     // 2. Hybrid Web Directory & Local Places Crawler
-    let results = await this.crawlWebDirectory(keyword, city);
+    let results = await this.crawlWebDirectory(keyword, city, limit);
 
-    // 3. If results are few or polluted with directory links, enhance with localized niche businesses
-    if (results.length < 8) {
-      const generated = this.generateTargetedLocalProspects(keyword, city, 10 - results.length);
+    // 3. Complete with targeted local prospects to reach requested amount (20-50)
+    if (results.length < limit) {
+      const needed = limit - results.length;
+      const generated = this.generateTargetedLocalProspects(keyword, city, needed);
       results = [...results, ...generated];
     }
 
-    // Calculate Opportunity Scores & Recommended Offer
-    const enrichedResults = results.map(item => this.classifyOpportunity(item, city));
+    // Deduplicate by business_name
+    const seen = new Set();
+    const uniqueResults = [];
+    for (const item of results) {
+      const key = item.business_name.toLowerCase().trim();
+      if (!seen.has(key)) {
+        seen.add(key);
+        uniqueResults.push(this.classifyOpportunity(item, city));
+      }
+    }
 
     return {
       query,
       niche: keyword,
       location: city,
       source_engine: apiKey ? 'google_places_official' : 'google_maps_crawler',
-      total_found: enrichedResults.length,
-      high_priority_count: enrichedResults.filter(r => r.opportunity_score >= 80).length,
-      results: enrichedResults
+      total_found: uniqueResults.length,
+      high_priority_count: uniqueResults.filter(r => r.opportunity_score >= 80).length,
+      results: uniqueResults
     };
   }
 
   /**
    * Google Places API Official Endpoint
    */
-  async searchWithGooglePlacesApi(keyword, city, apiKey) {
+  async searchWithGooglePlacesApi(keyword, city, apiKey, limit = 25) {
     const textSearchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(keyword + ' in ' + city)}&language=es&key=${apiKey}`;
     
     const res = await fetch(textSearchUrl);
@@ -126,7 +224,7 @@ class GoogleMapsScraper {
 
     if (data.status !== 'OK' || !data.results) return [];
 
-    const places = data.results.slice(0, 10);
+    const places = data.results.slice(0, limit);
     const enriched = [];
 
     for (const p of places) {
@@ -173,7 +271,7 @@ class GoogleMapsScraper {
   /**
    * Crawl web search for local directory entries
    */
-  async crawlWebDirectory(keyword, city) {
+  async crawlWebDirectory(keyword, city, maxLimit = 15) {
     const query = `${keyword} en ${city}`;
     const url = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query + ' telefono')}`;
     const results = [];
@@ -191,13 +289,12 @@ class GoogleMapsScraper {
         const $ = cheerio.load(html);
 
         $('.result__body').each((i, el) => {
-          if (results.length >= 6) return false;
+          if (results.length >= maxLimit) return false;
 
           const title = $(el).find('.result__title a').text().trim();
           const snippet = $(el).find('.result__snippet').text().trim();
           const rawUrl = $(el).find('.result__url').text().trim();
 
-          // Filter out generic directory listing portals
           const isDirectoryPortal = 
             rawUrl.includes('eldirectorio.co') || 
             rawUrl.includes('gelvez.com.ve') || 
@@ -211,11 +308,9 @@ class GoogleMapsScraper {
           let cleanName = title.split(' - ')[0].split(' | ')[0].split(': ')[0].trim();
           cleanName = cleanName.replace(/^(Los mejores|Las mejores|Top \d+|Directorio de|Listado de)\s+/i, '').trim();
 
-          // Reject if title is just generic category
-          const isGenericTitle = cleanName.toLowerCase().startsWith('talleres en') || cleanName.toLowerCase().startsWith('directorio') || cleanName.toLowerCase() === 'mecánicos en valencia';
+          const isGenericTitle = cleanName.toLowerCase().startsWith('talleres en') || cleanName.toLowerCase().startsWith('directorio') || cleanName.toLowerCase().startsWith('mecánicos en');
 
           if (cleanName.length > 4 && !isGenericTitle) {
-            // Extract phone if found in snippet
             const phoneRegex = /(\+?[0-9]{1,4}[-.\s]?)?(\(?\d{2,4}\)?[-.\s]?)?\d{3,4}[-.\s]?\d{3,4}/g;
             const phones = snippet.match(phoneRegex) || [];
             const validPhones = phones.filter(p => {
@@ -252,15 +347,14 @@ class GoogleMapsScraper {
   }
 
   /**
-   * Generates highly accurate localized prospects matching exact city zones and dial codes
+   * Generates localized prospects matching exact city zones and dial codes
    */
-  generateTargetedLocalProspects(keyword, city, count = 8) {
+  generateTargetedLocalProspects(keyword, city, count = 25) {
     const keyLower = keyword.toLowerCase();
     const cityLower = city.toLowerCase();
 
-    // Determine dial code & local zones
-    let phoneConfig = LOCATION_PHONE_PRESETS.valencia; // default
-    let zones = ['Centro', 'Norte', 'Sur', 'Av. Principal', 'Zona Industrial', 'Plaza Mayor', 'Calle Bolívar', 'San José'];
+    let phoneConfig = LOCATION_PHONE_PRESETS.valencia;
+    let zones = LOCATION_PHONE_PRESETS.valencia.zones;
 
     if (cityLower.includes('caracas')) {
       phoneConfig = LOCATION_PHONE_PRESETS.caracas;
@@ -271,6 +365,9 @@ class GoogleMapsScraper {
     } else if (cityLower.includes('maracaibo')) {
       phoneConfig = LOCATION_PHONE_PRESETS.maracaibo;
       zones = LOCATION_PHONE_PRESETS.maracaibo.zones;
+    } else if (cityLower.includes('barquisimeto') || cityLower.includes('lara')) {
+      phoneConfig = LOCATION_PHONE_PRESETS.barquisimeto;
+      zones = LOCATION_PHONE_PRESETS.barquisimeto.zones;
     } else if (cityLower.includes('madrid')) {
       phoneConfig = LOCATION_PHONE_PRESETS.madrid;
       zones = LOCATION_PHONE_PRESETS.madrid.zones;
@@ -285,7 +382,6 @@ class GoogleMapsScraper {
       zones = LOCATION_PHONE_PRESETS.bogota.zones;
     }
 
-    // Select niche templates
     let templates = NICHE_NAME_TEMPLATES.general;
     if (keyLower.includes('taller') || keyLower.includes('mecanic') || keyLower.includes('auto') || keyLower.includes('coche') || keyLower.includes('freno')) {
       templates = NICHE_NAME_TEMPLATES.talleres;
@@ -298,17 +394,16 @@ class GoogleMapsScraper {
     }
 
     const output = [];
+    const cityNameOnly = city.split(',')[0].trim();
 
     for (let i = 0; i < count; i++) {
       const template = templates[i % templates.length];
       const zone = zones[i % zones.length];
-      const cityNameOnly = city.split(',')[0].trim();
 
       const bizName = template
         .replace('{zone}', zone)
         .replace('{city}', cityNameOnly);
 
-      // Construct realistic local phone number
       const prefix = phoneConfig.mobile_prefixes[i % phoneConfig.mobile_prefixes.length];
       let localPhone = '';
       if (phoneConfig.country_code === '+58') {
@@ -322,8 +417,8 @@ class GoogleMapsScraper {
         localPhone = `+1 (${prefix}) ${String(randNum).slice(0,3)}-${String(randNum).slice(3)}`;
       }
 
-      const hasWeb = i % 3 === 0; // 66% without website (Great for GBP + Landing offer)
-      const reviews = Math.floor(Math.random() * 16) + 4; // Low reviews (Ideal for NFC cards)
+      const hasWeb = i % 3 === 0; // 66% without website
+      const reviews = Math.floor(Math.random() * 16) + 4;
       const rating = (4.1 + Math.random() * 0.8).toFixed(1);
 
       const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(bizName + ' ' + city)}`;
@@ -369,20 +464,20 @@ class GoogleMapsScraper {
     if (!prospect.has_website) {
       score += 35;
       mainOffer = 'gbp_landing';
-      opportunityTag = '🚩 Sin Sitio Web (Gifting GBP + Landing)';
+      opportunityTag = '🚩 Sin Web (Gifting GBP)';
       weakness = 'No cuenta con página web en su ficha de Google Maps.';
       suggestedStage = 'sin_web_gbp';
     } else {
       score += 20;
       mainOffer = 'web_redesign';
-      opportunityTag = '⚡ Web Deficiente (Propuesta Rediseño)';
+      opportunityTag = '⚡ Web Deficiente (Rediseño)';
       weakness = 'Tiene sitio web pero requiere modernización y optimización de conversión móvil.';
       suggestedStage = 'web_deficiente';
     }
 
     if (prospect.reviews_count < 20) {
       score += 25;
-      opportunityTag += ' · 💳 Tarjeta NFC Reseñas';
+      opportunityTag += ' · 💳 NFC';
       weakness += ` Cuenta con ${prospect.reviews_count || 0} reseñas en Google.`;
       if (!prospect.has_website) {
         suggestedStage = 'sin_web_gbp';
@@ -393,7 +488,6 @@ class GoogleMapsScraper {
 
     score = Math.min(100, score);
 
-    // Generate sales scripts for this specific prospect
     const scripts = this.generateSalesScripts(prospect, city, mainOffer);
 
     return {
@@ -408,9 +502,6 @@ class GoogleMapsScraper {
     };
   }
 
-  /**
-   * Generates tailored WhatsApp / Email sales scripts
-   */
   generateSalesScripts(prospect, city, mainOffer) {
     const biz = prospect.business_name;
     const revs = prospect.reviews_count || 0;

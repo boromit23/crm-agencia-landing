@@ -1,57 +1,59 @@
-/* Google Maps Scraper & Prospect Finder Styles */
+/* Google Maps Scraper & Prospect Finder Styles - Compact Row & Grid Views */
 
 .scraper-hero-card {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.6) 100%);
-  border: 1px solid var(--border-subtle);
+  background: var(--crm-bg-sidebar);
+  border: 1px solid var(--crm-border-subtle);
   border-radius: var(--radius-lg);
-  padding: 24px;
-  margin-bottom: 24px;
-  box-shadow: var(--shadow-md);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--crm-shadow-sm);
 }
 
 .scraper-hero-card h3 {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 8px;
+  font-size: 17px;
+  font-weight: 800;
+  margin-bottom: 6px;
   display: flex;
   align-items: center;
   gap: 10px;
+  letter-spacing: -0.02em;
 }
 
 .scraper-hero-card p {
   color: var(--text-secondary);
-  font-size: 13.5px;
-  margin-bottom: 20px;
+  font-size: 13px;
+  margin-bottom: 16px;
   max-width: 750px;
 }
 
 .scraper-form-grid {
   display: grid;
-  grid-template-columns: 1.2fr 1fr auto;
-  gap: 14px;
+  grid-template-columns: 1.2fr 1fr 140px auto;
+  gap: 12px;
   align-items: flex-end;
 }
 
 .quick-niche-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 14px;
+  gap: 6px;
+  margin-top: 12px;
 }
 
 .niche-chip {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  background: var(--crm-bg-input);
+  border: 1px solid var(--crm-border-subtle);
   color: var(--text-secondary);
-  padding: 5px 12px;
+  padding: 4px 10px;
   border-radius: var(--radius-full);
-  font-size: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s var(--ease-spring);
 }
 
 .niche-chip:hover {
-  background: var(--bg-card-hover);
+  background: var(--crm-bg-card-hover);
   color: var(--accent-primary);
   border-color: var(--accent-primary);
 }
@@ -61,106 +63,275 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
-  padding: 12px 18px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  gap: 14px;
+  margin-bottom: 14px;
+  padding: 10px 16px;
+  background: var(--crm-bg-sidebar);
+  border: 1px solid var(--crm-border-subtle);
   border-radius: var(--radius-md);
 }
 
 .results-count-text {
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .results-count-text strong {
   color: var(--accent-primary);
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .results-actions-group {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
 }
 
-/* Prospect Results Grid */
+/* View Mode Switcher */
+.view-mode-toggle {
+  display: flex;
+  background: var(--crm-bg-input);
+  border: 1px solid var(--crm-border-subtle);
+  border-radius: var(--radius-md);
+  padding: 2px;
+  gap: 2px;
+}
+
+.view-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s;
+}
+
+.view-btn:hover {
+  color: var(--text-primary);
+}
+
+.view-btn.active {
+  background: var(--crm-bg-surface-elevated);
+  color: var(--accent-primary);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+/* ========================================================== */
+/* COMPACT ROW / TABLE VIEW (Filas y Columnas Compactas) */
+/* ========================================================== */
+.prospects-table-container {
+  background: var(--crm-bg-sidebar);
+  border: 1px solid var(--crm-border-subtle);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+  box-shadow: var(--crm-shadow-sm);
+}
+
+.prospects-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  text-align: left;
+}
+
+.prospects-table th {
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--crm-border-subtle);
+  white-space: nowrap;
+}
+
+.prospects-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--crm-border-subtle);
+  color: var(--text-secondary);
+  vertical-align: middle;
+}
+
+.prospect-row {
+  transition: background 0.15s;
+}
+
+.prospect-row:hover td {
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--text-primary);
+}
+
+.prospect-row.selected td {
+  background: rgba(56, 189, 248, 0.06);
+}
+
+/* Cell Elements */
+.cell-biz-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cell-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: var(--crm-bg-surface-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+  border: 1px solid var(--crm-border-subtle);
+}
+
+.cell-name-text {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.cell-phone {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cell-phone a {
+  color: var(--accent-whatsapp);
+  text-decoration: none;
+}
+
+.cell-phone a:hover {
+  text-decoration: underline;
+}
+
+.cell-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+/* Checkbox Custom Styling */
+.table-checkbox {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  accent-color: var(--accent-primary);
+}
+
+/* Floating Batch Action Bar */
+.batch-action-bar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 18px;
+  background: linear-gradient(90deg, #0d1e38 0%, #102a4e 100%);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: var(--radius-md);
+  margin-bottom: 14px;
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.2);
+}
+
+.batch-info {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Grid View (Alternative) */
 .prospects-grid {
+  display: none;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+}
+
+.prospects-grid.active {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 18px;
 }
 
 .prospect-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: 20px;
+  background: var(--crm-bg-sidebar);
+  border: 1px solid var(--crm-border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
+  transition: all 0.2s var(--ease-spring);
 }
 
 .prospect-card:hover {
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-md);
+  border-color: var(--crm-border-medium);
+  box-shadow: var(--crm-shadow-md);
   transform: translateY(-2px);
-}
-
-.prospect-card.high-opportunity {
-  border-left: 4px solid var(--accent-danger);
-}
-
-.prospect-card.medium-opportunity {
-  border-left: 4px solid var(--accent-warning);
 }
 
 .prospect-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .prospect-title h4 {
-  font-size: 15.5px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .prospect-category {
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--text-muted);
 }
 
 .opportunity-score-badge {
-  background: rgba(244, 63, 94, 0.15);
-  color: var(--accent-danger);
-  border: 1px solid rgba(244, 63, 94, 0.3);
-  padding: 4px 10px;
+  background: rgba(244, 63, 94, 0.12);
+  color: var(--accent-danger-text);
+  border: 1px solid rgba(244, 63, 94, 0.25);
+  padding: 2px 7px;
   border-radius: var(--radius-full);
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 700;
   white-space: nowrap;
 }
 
+.opportunity-score-badge.high {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--accent-success-text);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
 .prospect-diagnosis {
-  background: var(--bg-card);
-  border-radius: var(--radius-md);
-  padding: 12px;
-  margin-bottom: 14px;
-  font-size: 12.5px;
+  background: var(--crm-bg-card);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  border: 1px solid var(--crm-border-subtle);
 }
 
 .diagnosis-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .diagnosis-item:last-child {
@@ -177,21 +348,21 @@
 
 .prospect-footer-actions {
   display: flex;
-  gap: 8px;
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border-subtle);
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--crm-border-subtle);
 }
 
 /* Sales Script Drawer / Modal Content */
 .script-box {
-  background: var(--bg-input);
-  border: 1px solid var(--border-subtle);
+  background: var(--crm-bg-input);
+  border: 1px solid var(--crm-border-subtle);
   border-radius: var(--radius-md);
-  padding: 16px;
-  margin-bottom: 16px;
+  padding: 14px;
+  margin-bottom: 14px;
   font-family: inherit;
-  font-size: 13.5px;
+  font-size: 13px;
   line-height: 1.6;
   white-space: pre-wrap;
   color: var(--text-primary);
@@ -199,19 +370,21 @@
 
 .script-tabs {
   display: flex;
-  gap: 8px;
-  margin-bottom: 14px;
+  gap: 6px;
+  margin-bottom: 12px;
+  overflow-x: auto;
 }
 
 .script-tab-btn {
-  padding: 8px 14px;
+  padding: 6px 12px;
   border-radius: var(--radius-md);
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  background: var(--crm-bg-card);
+  border: 1px solid var(--crm-border-subtle);
   color: var(--text-secondary);
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .script-tab-btn.active {
@@ -220,11 +393,8 @@
   border-color: var(--accent-primary);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .scraper-form-grid {
-    grid-template-columns: 1fr;
-  }
-  .prospects-grid {
     grid-template-columns: 1fr;
   }
 }

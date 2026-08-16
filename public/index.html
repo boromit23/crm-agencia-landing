@@ -131,42 +131,72 @@
       <section class="view-section" id="view-scraper">
         <div class="scraper-hero-card">
           <h3><span>🗺️</span> <span>Buscador y Scraper de Google Maps</span></h3>
-          <p>Encuentra en segundos negocios locales que **no tienen página web** (para regalarles landing con tu servicio GBP), que tienen **pocas reseñas** (para venderles tarjetas NFC) o que tienen webs antiguas.</p>
+          <p>Encuentra en segundos todos los negocios de una zona que **no tienen página web** (para regalarles landing con GBP) o que tienen **pocas reseñas** (para venderles tarjetas NFC).</p>
 
           <form id="scraperForm">
             <div class="scraper-form-grid">
               <div class="form-group" style="margin-bottom: 0;">
                 <label class="form-label" for="searchNiche">Nicho o Rubro del Negocio</label>
-                <input type="text" id="searchNiche" class="form-input" placeholder="Ej: Dentistas, Restaurantes, Talleres Mecánicos, Barberías..." required>
+                <input type="text" id="searchNiche" class="form-input" placeholder="Ej: Talleres Mecánicos, Dentistas, Restaurantes..." required>
               </div>
 
               <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label" for="searchLocation">Ciudad o Zona</label>
-                <input type="text" id="searchLocation" class="form-input" placeholder="Ej: Madrid, Caracas, Bogotá, Miami, Valencia..." required>
+                <label class="form-label" for="searchLocation">Ciudad o Localidad</label>
+                <input type="text" id="searchLocation" class="form-input" placeholder="Ej: Valencia, Venezuela, Caracas, Madrid..." required>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" for="searchLimit">Cantidad</label>
+                <select id="searchLimit" class="form-select">
+                  <option value="25" selected>25 Negocios</option>
+                  <option value="50">50 Negocios (Búsqueda Completa)</option>
+                  <option value="10">10 Negocios</option>
+                </select>
               </div>
 
               <button type="submit" class="btn btn-primary btn-lg" id="btnStartScraping">
-                🔍 Buscar Oportunidades
+                🔍 Buscar en Todo el Rango
               </button>
             </div>
           </form>
 
           <div class="quick-niche-chips">
-            <span style="font-size: 12px; color: var(--text-muted); align-self: center; margin-right: 4px;">Sugerencias rápidas:</span>
+            <span style="font-size: 11.5px; color: var(--text-muted); align-self: center; margin-right: 4px;">Sugerencias rápidas:</span>
+            <button class="niche-chip" data-niche="Talleres Mecánicos">🚗 Talleres Mecánicos</button>
             <button class="niche-chip" data-niche="Clínicas Dentales">🦷 Clínicas Dentales</button>
             <button class="niche-chip" data-niche="Restaurantes y Bares">🍕 Restaurantes & Bares</button>
-            <button class="niche-chip" data-niche="Talleres Mecánicos">🚗 Talleres Mecánicos</button>
-            <button class="niche-chip" data-niche="Salones de Belleza y Estética">💅 Salones de Belleza</button>
-            <button class="niche-chip" data-niche="Gimnasios y Crossfit">🏋️ Gimnasios</button>
+            <button class="niche-chip" data-niche="Salones de Belleza">💅 Salones de Belleza</button>
+            <button class="niche-chip" data-niche="Gimnasios">🏋️ Gimnasios</button>
           </div>
+        </div>
+
+        <!-- Floating Batch Action Bar -->
+        <div class="batch-action-bar" id="batchActionBar">
+          <div class="batch-info" id="selectedCountText">0 prospectos seleccionados</div>
+          <button class="btn btn-primary btn-sm" id="btnImportSelected">
+            📥 Importar Seleccionados a Pipeline
+          </button>
         </div>
 
         <!-- Results Toolbar -->
         <div class="results-header-bar" id="scraperResultsBar" style="display: none;">
           <div class="results-count-text">
-            Encontrados: <strong id="totalFoundCount">0</strong> negocios | <strong id="highOppCount" style="color: var(--accent-danger);">0</strong> de Alta Oportunidad
+            <span>Resultados: <strong id="totalFoundCount">0</strong> prospectos</span>
+            <span>·</span>
+            <span>Alta Oportunidad: <strong id="highOppCount" style="color: var(--accent-danger);">0</strong></span>
           </div>
+
           <div class="results-actions-group">
+            <!-- View Mode Switcher -->
+            <div class="view-mode-toggle">
+              <button class="view-btn active" id="btnViewTable" title="Vista Tabla Compacta (Filas)">
+                <span>📑</span> <span>Filas</span>
+              </button>
+              <button class="view-btn" id="btnViewGrid" title="Vista Tarjetas">
+                <span>🗂️</span> <span>Tarjetas</span>
+              </button>
+            </div>
+
             <button class="btn btn-primary btn-sm" id="btnBulkImport">
               📥 Importar Todos a Pipeline
             </button>
@@ -176,17 +206,39 @@
         <!-- Loading State -->
         <div id="scraperLoading" style="display: none; text-align: center; padding: 60px 20px;">
           <div style="font-size: 32px; animation: spin 1s infinite linear; display: inline-block;">⚙️</div>
-          <div style="margin-top: 14px; font-weight: 700; font-size: 15px;">Escaneando Google Maps y diagnosticando oportunidades...</div>
-          <div style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Analizando fichas sin web y estado de reseñas.</div>
+          <div style="margin-top: 14px; font-weight: 700; font-size: 15px;">Escaneando Google Maps en todas las zonas de la localidad...</div>
+          <div style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Extrayendo negocios, diagnosticando sitios web y revisando calificaciones.</div>
         </div>
 
-        <!-- Grid of Prospects -->
-        <div class="prospects-grid" id="prospectsGrid">
-          <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--text-muted); background: var(--crm-bg-sidebar); border-radius: var(--radius-lg); border: 1px dashed var(--crm-border-subtle);">
-            <div style="font-size: 40px; margin-bottom: 12px;">🗺️</div>
-            <h4 style="font-size: 16px; color: var(--text-primary); margin-bottom: 6px;">Listo para prospectar clientes locales</h4>
-            <p style="font-size: 13px; max-width: 450px; margin: 0 auto;">Ingresa un nicho y ciudad arriba o selecciona una categoría sugerida para descubrir prospectos calificados en Google Maps.</p>
-          </div>
+        <!-- 1. COMPACT TABLE / ROW VIEW (Default) -->
+        <div class="prospects-table-container" id="prospectsTableContainer" style="display: none;">
+          <table class="prospects-table">
+            <thead>
+              <tr>
+                <th style="width: 32px;">
+                  <input type="checkbox" class="table-checkbox" id="selectAllProspects" title="Seleccionar todos">
+                </th>
+                <th>Negocio / Rubro</th>
+                <th>Zona / Dirección</th>
+                <th>WhatsApp / Teléfono</th>
+                <th>Sitio Web</th>
+                <th>Reseñas</th>
+                <th>Score</th>
+                <th style="text-align: right;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="prospectsTableBody"></tbody>
+          </table>
+        </div>
+
+        <!-- 2. GRID / CARD VIEW (Alternative) -->
+        <div class="prospects-grid" id="prospectsGrid"></div>
+
+        <!-- Initial Empty State -->
+        <div id="scraperEmptyState" style="text-align: center; padding: 60px 20px; color: var(--text-muted); background: var(--crm-bg-sidebar); border-radius: var(--radius-lg); border: 1px dashed var(--crm-border-subtle);">
+          <div style="font-size: 40px; margin-bottom: 12px;">🗺️</div>
+          <h4 style="font-size: 16px; color: var(--text-primary); margin-bottom: 6px;">Listo para prospectar en todo el rango de tu ciudad</h4>
+          <p style="font-size: 13px; max-width: 480px; margin: 0 auto;">Ingresa un nicho y ciudad arriba para desplegar hasta 50 clientes potenciales en una vista compacta y rápida por filas.</p>
         </div>
       </section>
 

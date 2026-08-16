@@ -2,15 +2,16 @@ const express = require('express');
 const router = express.Router();
 const { scraper } = require('../scraper');
 
-// GET /api/scraper/search - Search Google Maps prospects
+// GET /api/scraper/search - Search Google Maps prospects with customizable limit (10 to 50)
 router.get('/search', async (req, res) => {
   try {
-    const { niche, location } = req.query;
+    const { niche, location, limit } = req.query;
     if (!niche || !location) {
-      return res.status(400).json({ success: false, error: 'Se requiere nicho (ej. Dentistas) y ubicación (ej. Madrid)' });
+      return res.status(400).json({ success: false, error: 'Se requiere nicho (ej. Talleres mecánicos) y ubicación (ej. Valencia, Venezuela)' });
     }
 
-    const data = await scraper.searchProspects(niche, location);
+    const maxLimit = Math.min(50, Math.max(5, parseInt(limit) || 25));
+    const data = await scraper.searchProspects(niche, location, { limit: maxLimit });
     res.json({ success: true, data });
   } catch (error) {
     console.error('Error in scraper search:', error);
