@@ -22,6 +22,7 @@ const App = {
     if (window.WebhooksUI) window.WebhooksUI.init();
     if (window.AdsAgentUI) window.AdsAgentUI.init();
     if (window.Analytics) window.Analytics.init();
+    if (window.SettingsUI) window.SettingsUI.init();
   },
 
   initTheme() {
@@ -67,7 +68,7 @@ const App = {
 
     // Check hash in URL or default to dashboard
     const hash = window.location.hash.replace('#', '');
-    if (hash && ['dashboard', 'pipeline', 'scraper', 'webhooks', 'analytics'].includes(hash)) {
+    if (hash && ['dashboard', 'pipeline', 'scraper', 'webhooks', 'analytics', 'settings'].includes(hash)) {
       this.switchView(hash);
     } else {
       this.switchView('dashboard');
@@ -94,7 +95,8 @@ const App = {
       pipeline: { title: 'Pipeline de Ventas', desc: 'Gestiona tus prospectos y etapas de cierre' },
       scraper: { title: 'Búsqueda & Modo Calle', desc: 'Scraper de Google Maps y captura rápida de clientes en frío' },
       webhooks: { title: 'Facebook Ads & Webhooks', desc: 'Recepción automática de prospectos desde campañas de anuncios' },
-      analytics: { title: 'Reporte de Ventas', desc: 'Histórico de transacciones y facturación por servicio' }
+      analytics: { title: 'Reporte de Ventas', desc: 'Histórico de transacciones y facturación por servicio' },
+      settings: { title: 'Configuración & Seguridad', desc: 'Gestiona tu PIN de acceso y dispositivos vinculados' }
     };
 
     const header = titleMap[viewName] || { title: 'GrowthCRM', desc: '' };
@@ -110,6 +112,7 @@ const App = {
     }
     if (viewName === 'analytics' && window.Analytics) window.Analytics.loadMetrics();
     if (viewName === 'scraper' && window.StreetMode) window.StreetMode.loadStreetStats();
+    if (viewName === 'settings' && window.SettingsUI) window.SettingsUI.loadSettingsView();
   },
 
   setupSubTabs() {

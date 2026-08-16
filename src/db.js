@@ -226,14 +226,15 @@ const db = {
   // SETTINGS
   async getSettings() {
     const { data, error } = await supabase.from('agency_settings').select('*').eq('id', 'config_default').single();
-    if (error) {
+    if (error || !data) {
       return {
         id: 'config_default',
-        agency_name: 'Agencia Growth & GBP',
+        agency_name: 'GrowthCRM Agencia',
         default_currency: 'USD',
         default_nfc_price: 35.0,
         default_landing_price: 250.0,
         default_redesign_price: 450.0,
+        access_pin: '202688',
         webhook_secret: 'wh_sec_crm_landing_2026'
       };
     }
@@ -242,7 +243,7 @@ const db = {
 
   async updateSettings(updates) {
     updates.updated_at = new Date().toISOString();
-    const { data, error } = await supabase.from('agency_settings').update(updates).eq('id', 'config_default').select().single();
+    const { data, error } = await supabase.from('agency_settings').upsert({ id: 'config_default', ...updates }).select().single();
     if (error) throw error;
     return data;
   },

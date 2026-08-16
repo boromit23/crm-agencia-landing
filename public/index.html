@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="/css/analytics.css">
   <link rel="stylesheet" href="/css/ads_agent.css">
   <link rel="stylesheet" href="/css/auth.css">
+  <link rel="stylesheet" href="/css/settings.css">
 </head>
 <body>
 
@@ -125,6 +126,14 @@
           <a class="nav-link" data-view="analytics" id="navAnalytics">
             <span class="icon">📈</span>
             <span>Reporte de Ventas</span>
+          </a>
+        </li>
+
+        <!-- 6. CONFIGURACIÓN & SEGURIDAD -->
+        <li>
+          <a class="nav-link" data-view="settings" id="navSettings">
+            <span class="icon">⚙️</span>
+            <span>Configuración</span>
           </a>
         </li>
       </ul>
@@ -1050,6 +1059,73 @@
         </div>
       </section>
 
+      <!-- ========================================================== -->
+      <!-- SECTION 6: CONFIGURACIÓN & SEGURIDAD -->
+      <!-- ========================================================== -->
+      <section class="view-section" id="view-settings">
+        
+        <div class="settings-grid">
+          
+          <!-- Left: Change PIN Card -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <h3><span>🔐</span> <span>Cambiar PIN de Acceso</span></h3>
+            </div>
+
+            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px;">
+              Configura un nuevo PIN de seguridad de 4 a 8 dígitos para proteger el acceso a tu CRM en todos tus dispositivos.
+            </p>
+
+            <div id="pinChangeStatus" style="display: none;"></div>
+
+            <form id="changePinForm">
+              <div class="form-group">
+                <label class="form-label" for="settingCurrentPin">PIN Actual *</label>
+                <input type="password" id="settingCurrentPin" class="form-input" placeholder="Introduce el PIN actual (ej. 202688)" required>
+              </div>
+
+              <div class="fast-form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="settingNewPin">Nuevo PIN *</label>
+                  <input type="password" id="settingNewPin" class="form-input" placeholder="4 a 8 dígitos" maxlength="8" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="settingConfirmPin">Confirmar Nuevo PIN *</label>
+                  <input type="password" id="settingConfirmPin" class="form-input" placeholder="Repite el nuevo PIN" maxlength="8" required>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary" id="btnSaveNewPin" style="width: 100%; margin-top: 6px;">
+                💾 Guardar Nuevo PIN
+              </button>
+            </form>
+          </div>
+
+          <!-- Right: Linked Devices & Sessions Card -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <h3><span>📱</span> <span>Dispositivos Enlazados</span></h3>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-secondary btn-sm" id="btnRefreshDevices" title="Refrescar dispositivos">🔄</button>
+                <button class="btn btn-secondary btn-sm" id="btnRevokeAllDevices" style="color: #fda4af;" title="Cerrar sesión en todos los demás">
+                  🔴 Cerrar Otros
+                </button>
+              </div>
+            </div>
+
+            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">
+              Estos son los teléfonos y computadoras que tienen acceso activo a tu CRM sin pedir el PIN nuevamente.
+            </p>
+
+            <div class="devices-list-container" id="linkedDevicesList">
+              <div style="text-align: center; color: var(--text-muted); padding: 20px;">Cargando dispositivos...</div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
     </div><!-- /main-wrapper -->
 
     <!-- MOBILE BOTTOM NAVIGATION BAR -->
@@ -1073,6 +1149,10 @@
       <a class="bottom-nav-item" data-view="analytics">
         <span class="icon">📈</span>
         <span>Reporte</span>
+      </a>
+      <a class="bottom-nav-item" data-view="settings">
+        <span class="icon">⚙️</span>
+        <span>Ajustes</span>
       </a>
     </nav>
 
@@ -1235,6 +1315,7 @@
   <script src="/js/webhooks.js"></script>
   <script src="/js/ads_agent.js"></script>
   <script src="/js/analytics.js"></script>
+  <script src="/js/settings.js"></script>
   <script src="/js/app.js"></script>
 </body>
 </html>
