@@ -8,5 +8,6 @@ setup_supabase.js
 seed_data.js
 update_maps_urls.js
 test_scraper.js
+seed_full_pipeline.js
 *.html
 !public/**/*.html

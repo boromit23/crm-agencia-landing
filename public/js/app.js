@@ -101,15 +101,16 @@ const App = {
     if (h2) h2.innerText = header.title;
     if (p) p.innerText = header.desc;
 
-    // Refresh active view data
+    // Refresh active view data cleanly
     if (viewName === 'dashboard' && window.Dashboard) window.Dashboard.loadDashboardData();
-    if (viewName === 'pipeline' && window.Pipeline) window.Pipeline.renderCards();
+    if (viewName === 'pipeline' && window.Pipeline) {
+      window.Pipeline.loadLeads();
+    }
     if (viewName === 'analytics' && window.Analytics) window.Analytics.loadMetrics();
     if (viewName === 'scraper' && window.StreetMode) window.StreetMode.loadStreetStats();
   },
 
   setupSubTabs() {
-    // Subtabs between Maps Scraper and Street Mode
     const subtabs = document.querySelectorAll('.subtab-btn');
     subtabs.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -155,12 +156,14 @@ const App = {
   },
 
   setupModals() {
+    // Close modal handlers
     document.querySelectorAll('.modal-close, .btn-modal-cancel').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
       });
     });
 
+    // Close when clicking outside modal box
     document.querySelectorAll('.modal-overlay').forEach(modal => {
       modal.addEventListener('click', (e) => {
         if (e.target === modal) {
@@ -169,15 +172,31 @@ const App = {
       });
     });
 
+    // Close on Escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
       }
     });
 
+    // Universal New Lead Buttons
+    document.querySelectorAll('#btnNewLead, .btn-new-lead').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (window.Pipeline) {
+          window.Pipeline.openNewLeadModal();
+        }
+      });
+    });
+
+    // Lead Form submit handler
     const leadForm = document.getElementById('leadForm');
     if (leadForm) {
-      leadForm.addEventListener('submit', (e) => Pipeline.handleFormSubmit(e));
+      leadForm.addEventListener('submit', (e) => {
+        if (window.Pipeline) {
+          window.Pipeline.handleFormSubmit(e);
+        }
+      });
     }
   },
 

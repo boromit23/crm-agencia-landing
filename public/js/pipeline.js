@@ -1,13 +1,13 @@
-// Pipeline Kanban Board Module - Modern Attio / Linear / Dribbble UI
+// Pipeline Kanban Board Module - Hubly CRM (Accessible Color Palette)
 
 const Pipeline = {
   stages: [
     { id: 'nuevo_prospecto', label: 'Nuevo Prospecto', icon: '📥', color: '#38bdf8' },
-    { id: 'sin_web_gbp', label: 'Sin Web (GBP + Landing)', icon: '🌐', color: '#f43f5e' },
+    { id: 'sin_web_gbp', label: 'Sin Web (GBP + Landing)', icon: '🌐', color: '#f97316' },
     { id: 'web_deficiente', label: 'Web Deficiente (Rediseño)', icon: '⚡', color: '#f59e0b' },
-    { id: 'nfc_calle', label: 'Tarjeta NFC Reseñas', icon: '💳', color: '#8b5cf6' },
+    { id: 'nfc_calle', label: 'Tarjeta NFC Reseñas', icon: '💳', color: '#0ea5e9' },
     { id: 'contactado', label: 'Contactado / Demo', icon: '📞', color: '#06b6d4' },
-    { id: 'propuesta', label: 'En Propuesta', icon: '🤝', color: '#3b82f6' },
+    { id: 'propuesta', label: 'En Propuesta', icon: '🤝', color: '#6366f1' },
     { id: 'ganado', label: 'Ganado (Cierre)', icon: '🏆', color: '#10b981' },
     { id: 'perdido', label: 'Perdido', icon: '❌', color: '#64748b' }
   ],
@@ -36,9 +36,7 @@ const Pipeline = {
           </div>
           <span class="column-count" id="count-${stage.id}">0</span>
         </div>
-        <div class="column-cards" data-stage="${stage.id}" id="cards-${stage.id}">
-          <div class="skeleton-card" style="height: 90px; border-radius: 8px; background: rgba(255,255,255,0.03); margin-bottom: 8px;"></div>
-        </div>
+        <div class="column-cards" data-stage="${stage.id}" id="cards-${stage.id}"></div>
       </div>
     `).join('');
 
@@ -59,7 +57,7 @@ const Pipeline = {
     const badge = document.getElementById('pipelineCountBadge');
     if (badge) badge.innerText = this.leads.length;
 
-    // Reset columns
+    // Reset all column containers and counters
     this.stages.forEach(stage => {
       const container = document.getElementById(`cards-${stage.id}`);
       const countEl = document.getElementById(`count-${stage.id}`);
@@ -68,11 +66,9 @@ const Pipeline = {
     });
 
     const filteredLeads = this.leads.filter(lead => {
-      // Source filter
       if (this.currentFilter !== 'all' && lead.source !== this.currentFilter) {
         return false;
       }
-      // Search filter
       if (this.searchQuery) {
         const q = this.searchQuery.toLowerCase();
         const matchName = (lead.business_name || '').toLowerCase().includes(q);
@@ -91,105 +87,111 @@ const Pipeline = {
     filteredLeads.forEach(lead => {
       const stage = lead.stage || 'nuevo_prospecto';
       const container = document.getElementById(`cards-${stage}`);
+      
       if (container) {
         counts[stage] = (counts[stage] || 0) + 1;
-        container.appendChild(this.createLeadCardElement(lead));
+        const card = this.createLeadCard(lead);
+        container.appendChild(card);
       }
     });
 
-    // Update counts
+    // Update column counters
     this.stages.forEach(stage => {
       const countEl = document.getElementById(`count-${stage.id}`);
-      if (countEl) countEl.innerText = counts[stage.id] || '0';
+      if (countEl) {
+        countEl.innerText = counts[stage.id] || 0;
+      }
     });
-
-    // Update global counter in sidebar
-    const badge = document.getElementById('pipelineCountBadge');
-    if (badge) badge.innerText = filteredLeads.length;
   },
 
-  getCategoryAvatar(category = '', name = '') {
-    const cat = (category + ' ' + name).toLowerCase();
-    if (cat.includes('dent') || cat.includes('odont')) return '🦷';
-    if (cat.includes('pizz') || cat.includes('restaur') || cat.includes('comida') || cat.includes('bar') || cat.includes('caf')) return '🍕';
-    if (cat.includes('taller') || cat.includes('mecanic') || cat.includes('auto') || cat.includes('coche')) return '🚗';
-    if (cat.includes('barber') || cat.includes('salon') || cat.includes('estetic') || cat.includes('belleza') || cat.includes('spa') || cat.includes('uña')) return '💅';
-    if (cat.includes('gym') || cat.includes('gimnasio') || cat.includes('fitness')) return '🏋️';
-    if (cat.includes('medic') || cat.includes('salud') || cat.includes('clinic')) return '🏥';
-    return '🏢';
-  },
-
-  createLeadCardElement(lead) {
+  createLeadCard(lead) {
     const card = document.createElement('div');
     card.className = 'kanban-card';
-    card.setAttribute('draggable', 'true');
-    card.setAttribute('data-id', lead.id);
+    card.draggable = true;
+    card.dataset.id = lead.id;
 
-    const avatar = this.getCategoryAvatar(lead.category, lead.business_name);
+    // Resolve Category Emoji
+    const avatar = ScraperUI ? ScraperUI.getCategoryAvatar(lead.category, lead.business_name) : '🏢';
 
     // Source Tag
-    let sourceBadge = '<span class="tag-badge source-maps">🗺️ Maps</span>';
-    if (lead.source === 'calle_nfc') sourceBadge = '<span class="tag-badge source-calle">💳 Calle NFC</span>';
-    if (lead.source === 'facebook_ads') sourceBadge = '<span class="tag-badge source-fb">⚡ FB Ads</span>';
-    if (lead.source === 'web_form') sourceBadge = '<span class="tag-badge">🌐 Form</span>';
+    const sourceMap = {
+      google_maps: { label: '🗺️ Maps', cls: 'source-maps' },
+      calle_nfc: { label: '💳 Calle NFC', cls: 'source-calle' },
+      facebook_ads: { label: '⚡ FB Ads', cls: 'source-fb' },
+      web_form: { label: '🌐 Web Form', cls: 'source-maps' },
+      manual: { label: '✍️ Manual', cls: 'source-maps' }
+    };
+    const srcInfo = sourceMap[lead.source] || { label: lead.source, cls: 'source-maps' };
 
     // Website Tag
-    let webBadge = lead.has_website 
-      ? '<span class="tag-badge website-bad">⚡ Web Lenta / Rediseño</span>'
-      : '<span class="tag-badge website-none">🚩 Sin Web (GBP Gift)</span>';
+    let webTag = '';
+    if (lead.has_website === false || lead.website_status === 'sin_web') {
+      webTag = '<span class="tag-badge website-none">🚩 Sin Web</span>';
+    } else if (lead.website_status === 'web_deficiente') {
+      webTag = '<span class="tag-badge website-bad">⚡ Web Lenta</span>';
+    }
 
     // Reviews Tag
-    let reviewsBadge = (lead.reviews_count !== null && lead.reviews_count !== undefined)
-      ? `<span class="tag-badge ${lead.reviews_count < 20 ? 'reviews-low' : ''}">⭐ ${lead.rating || '4.0'} (${lead.reviews_count})</span>` 
-      : '';
+    let reviewsTag = '';
+    if (lead.reviews_count !== null && lead.reviews_count !== undefined) {
+      reviewsTag = `<span class="tag-badge ${lead.reviews_count < 20 ? 'reviews-low' : ''}">⭐ ${lead.rating || '4.0'} (${lead.reviews_count})</span>`;
+    }
+
+    const valueFormatted = lead.deal_value ? `$${parseFloat(lead.deal_value).toFixed(0)}` : '$0';
+    const dateFormatted = lead.created_at ? new Date(lead.created_at).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' }) : 'Hoy';
 
     card.innerHTML = `
       <div class="card-head">
-        <div class="card-avatar">${avatar}</div>
+        <span class="card-avatar">${avatar}</span>
         <div class="card-title-group">
           <div class="card-business-name" title="${lead.business_name}">${lead.business_name}</div>
-          <div class="card-subtitle">${lead.city || 'Ubicación local'} ${lead.category ? '· ' + lead.category : ''}</div>
+          <div class="card-subtitle">${lead.contact_name ? lead.contact_name + ' · ' : ''}${lead.city || 'Local'}</div>
         </div>
-        <div class="card-deal-value">${API.formatCurrency(lead.deal_value || 0)}</div>
+        <div class="card-deal-value">${valueFormatted}</div>
       </div>
 
       <div class="card-tags">
-        ${sourceBadge}
-        ${webBadge}
-        ${reviewsBadge}
+        <span class="tag-badge ${srcInfo.cls}">${srcInfo.label}</span>
+        ${webTag}
+        ${reviewsTag}
       </div>
 
       <div class="card-meta-row">
         <div class="card-meta-contact">
-          <span>👤</span>
-          <span>${lead.contact_name || lead.phone || 'Sin contacto'}</span>
+          <span>📞</span>
+          <span>${lead.phone || lead.whatsapp || 'Sin teléfono'}</span>
         </div>
-        <span class="card-date">${new Date(lead.created_at).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}</span>
+        <span class="card-date">${dateFormatted}</span>
       </div>
 
       <div class="card-action-dock">
         <div class="action-buttons-group">
-          ${lead.phone || lead.whatsapp ? `
-            <button class="card-btn btn-wa-direct" title="Abrir WhatsApp con Guion" onclick="Pipeline.openLeadScriptModal('${lead.id}')">
-              <span>💬</span> <span>Guion WA</span>
-            </button>
-          ` : ''}
+          <button class="card-btn btn-wa-direct" onclick="event.stopPropagation(); Pipeline.openLeadScriptModal('${lead.id}')" title="Abrir Guion y Enviar WhatsApp">
+            <span>💬</span> <span>WhatsApp</span>
+          </button>
           ${lead.maps_url ? `
-            <a href="${lead.maps_url}" target="_blank" class="card-btn" title="Ver en Google Maps">
-              🗺️
+            <a href="${lead.maps_url}" target="_blank" class="card-btn" onclick="event.stopPropagation();" title="Abrir en Google Maps">
+              <span>🗺️</span>
             </a>
           ` : ''}
-          <button class="card-btn" title="Editar Lead" onclick="Pipeline.openEditModal('${lead.id}')">
-            ✏️
+        </div>
+        <div class="action-buttons-group">
+          <button class="card-btn" onclick="event.stopPropagation(); Pipeline.openEditModal('${lead.id}')" title="Editar Prospecto">
+            <span>✏️</span>
           </button>
-          <button class="card-btn" title="Eliminar" onclick="Pipeline.confirmDelete('${lead.id}', '${lead.business_name.replace(/'/g, "\\'")}')">
-            🗑️
+          <button class="card-btn" onclick="event.stopPropagation(); Pipeline.confirmDelete('${lead.id}', '${lead.business_name.replace(/'/g, "\\'")}')" title="Eliminar">
+            <span>🗑️</span>
           </button>
         </div>
       </div>
     `;
 
-    // Drag Events
+    // Click on card opens edit modal
+    card.addEventListener('click', () => {
+      this.openEditModal(lead.id);
+    });
+
+    // Drag start / end
     card.addEventListener('dragstart', (e) => {
       this.draggedLeadId = lead.id;
       card.classList.add('dragging');
@@ -206,6 +208,7 @@ const Pipeline = {
 
   setupDragAndDrop() {
     const columns = document.querySelectorAll('.column-cards');
+
     columns.forEach(col => {
       col.addEventListener('dragover', (e) => {
         e.preventDefault();
@@ -219,40 +222,50 @@ const Pipeline = {
       col.addEventListener('drop', async (e) => {
         e.preventDefault();
         col.classList.remove('drag-over');
-        const targetStage = col.getAttribute('data-stage');
-        const leadId = this.draggedLeadId;
 
-        if (leadId && targetStage) {
-          const lead = this.leads.find(l => l.id === leadId);
-          if (lead && lead.stage !== targetStage) {
-            lead.stage = targetStage;
-            this.renderCards();
-            try {
-              await API.updateLeadStage(leadId, targetStage);
-              API.toast(`Etapa actualizada a "${Pipeline.getStageLabel(targetStage)}"`, 'success');
-            } catch (err) {
-              API.toast('Error actualizando etapa', 'error');
-              await this.loadLeads();
-            }
-          }
+        const leadId = e.dataTransfer.getData('text/plain') || this.draggedLeadId;
+        const newStage = col.dataset.stage;
+
+        if (leadId && newStage) {
+          await this.moveLeadStage(leadId, newStage);
         }
       });
     });
   },
 
-  getStageLabel(stageId) {
-    const s = this.stages.find(st => st.id === stageId);
-    return s ? s.label : stageId;
+  async moveLeadStage(leadId, newStage) {
+    const lead = this.leads.find(l => l.id === leadId);
+    if (!lead || lead.stage === newStage) return;
+
+    // Optimistic UI update
+    lead.stage = newStage;
+    this.renderCards();
+
+    try {
+      await API.updateLeadStage(leadId, newStage);
+      API.toast(`Movido a "${this.stages.find(s => s.id === newStage)?.label}"`, 'info');
+      
+      // If won, trigger celebration
+      if (newStage === 'ganado') {
+        API.toast(`🏆 ¡Trato ganado con ${lead.business_name}!`, 'success');
+      }
+
+      if (window.Dashboard) window.Dashboard.loadDashboardData();
+      if (window.Analytics) window.Analytics.loadMetrics();
+    } catch (err) {
+      API.toast('Error actualizando etapa del lead', 'error');
+      await this.loadLeads();
+    }
   },
 
   setupEventListeners() {
     // Filter chips
-    const filterChips = document.querySelectorAll('#pipelineFilters .filter-chip');
-    filterChips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        filterChips.forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        this.currentFilter = chip.getAttribute('data-filter');
+    const filterButtons = document.querySelectorAll('#pipelineFilters .filter-chip');
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        this.currentFilter = btn.getAttribute('data-filter');
         this.renderCards();
       });
     });
@@ -262,7 +275,6 @@ const Pipeline = {
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
         this.searchQuery = e.target.value.trim();
-        // Sync with omnibox if exists
         const omni = document.getElementById('globalOmniboxInput');
         if (omni && omni.value !== this.searchQuery) omni.value = this.searchQuery;
         this.renderCards();
@@ -283,11 +295,13 @@ const Pipeline = {
       });
     }
 
-    // New Lead Button
-    const newBtn = document.getElementById('btnNewLead');
-    if (newBtn) {
-      newBtn.addEventListener('click', () => this.openNewLeadModal());
-    }
+    // New Lead Buttons (bind all instances)
+    document.querySelectorAll('#btnNewLead, .btn-new-lead').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.openNewLeadModal();
+      });
+    });
   },
 
   openNewLeadModal() {
@@ -297,7 +311,8 @@ const Pipeline = {
 
     form.reset();
     document.getElementById('modalLeadId').value = '';
-    document.getElementById('modalLeadTitle').innerText = 'Nuevo Lead / Prospecto';
+    document.getElementById('modalLeadTitle').innerText = 'Nuevo Prospecto';
+    document.getElementById('leadDealValue').value = '250.00';
     modal.classList.add('active');
   },
 
@@ -356,6 +371,7 @@ const Pipeline = {
 
       document.getElementById('leadModal').classList.remove('active');
       await this.loadLeads();
+      if (window.Dashboard) window.Dashboard.loadDashboardData();
       if (window.Analytics) window.Analytics.loadMetrics();
     } catch (err) {
       API.toast('Error guardando lead', 'error');
@@ -368,6 +384,7 @@ const Pipeline = {
         await API.deleteLead(id);
         API.toast('Lead eliminado', 'info');
         await this.loadLeads();
+        if (window.Dashboard) window.Dashboard.loadDashboardData();
         if (window.Analytics) window.Analytics.loadMetrics();
       } catch (err) {
         API.toast('Error eliminando lead', 'error');
@@ -386,7 +403,6 @@ const Pipeline = {
     document.getElementById('scriptBizName').innerText = lead.business_name;
     document.getElementById('scriptPhone').innerText = lead.phone || lead.whatsapp || 'Sin teléfono';
 
-    // Fetch or generate scripts
     try {
       const res = await API.generateSalesScripts(lead, lead.city || 'tu ciudad', lead.has_website ? 'web_redesign' : 'gbp_landing');
       const scripts = res.data;
@@ -395,7 +411,6 @@ const Pipeline = {
       
       document.getElementById('scriptContent').value = defaultScript.whatsapp_text;
 
-      // Tab switcher handlers
       document.getElementById('btnTabGbp').onclick = () => {
         document.getElementById('scriptContent').value = scripts.gbp_gift.whatsapp_text;
         Pipeline.activateScriptTab('btnTabGbp');
@@ -409,12 +424,10 @@ const Pipeline = {
         Pipeline.activateScriptTab('btnTabRedesign');
       };
 
-      // Direct WhatsApp Send button
       document.getElementById('btnSendWhatsappNow').onclick = () => {
         const text = document.getElementById('scriptContent').value;
         API.openWhatsApp(lead.phone || lead.whatsapp, text);
         modal.classList.remove('active');
-        // Automatically move stage to 'contactado' if it was in 'nuevo_prospecto'
         if (lead.stage === 'nuevo_prospecto' || lead.stage === 'sin_web_gbp' || lead.stage === 'web_deficiente') {
           API.updateLeadStage(lead.id, 'contactado').then(() => Pipeline.loadLeads());
         }

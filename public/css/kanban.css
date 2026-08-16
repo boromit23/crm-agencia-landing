@@ -1,4 +1,4 @@
-/* Pipeline Kanban Board Styles - Attio & Dribbble 2026 Inspired */
+/* Pipeline Kanban Board Styles - Hubly & Attio UI (Accessible Colors) */
 
 .pipeline-toolbar {
   display: flex;
@@ -66,7 +66,7 @@
 .filter-chip:hover {
   border-color: var(--crm-border-medium);
   color: var(--text-primary);
-  background: #0d1527;
+  background: var(--crm-bg-card-hover);
 }
 
 .filter-chip.active {
@@ -128,7 +128,7 @@
 }
 
 .column-count {
-  background: #1e293b;
+  background: var(--crm-bg-input);
   color: var(--text-muted);
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
@@ -155,7 +155,7 @@
   border-radius: var(--radius-md);
 }
 
-/* Kanban Lead Card (Attio / Linear Style) */
+/* Kanban Lead Card */
 .kanban-card {
   background: var(--crm-bg-card);
   border: 1px solid var(--crm-border-subtle);
@@ -168,14 +168,14 @@
   display: flex;
   flex-direction: column;
   gap: 9px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--crm-shadow-sm);
 }
 
 .kanban-card:hover {
   background: var(--crm-bg-card-hover);
   border-color: var(--crm-border-medium);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px -3px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  box-shadow: var(--crm-shadow-md);
 }
 
 .kanban-card.dragging {
@@ -195,14 +195,13 @@
   width: 32px;
   height: 32px;
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  background: var(--crm-bg-surface-elevated);
   border: 1px solid var(--crm-border-medium);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 15px;
   flex-shrink: 0;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
 }
 
 .card-title-group {
@@ -242,7 +241,7 @@
   flex-shrink: 0;
 }
 
-/* Card Diagnosis & Tags */
+/* Card Tags & Diagnosis (Accessible) */
 .card-tags {
   display: flex;
   flex-wrap: wrap;
@@ -266,9 +265,9 @@
 .tag-badge.source-maps { background: rgba(56, 189, 248, 0.12); color: var(--accent-primary); border-color: rgba(56, 189, 248, 0.3); }
 .tag-badge.source-calle { background: rgba(245, 158, 11, 0.12); color: var(--accent-warning-text); border-color: rgba(245, 158, 11, 0.3); }
 .tag-badge.source-fb { background: rgba(99, 102, 241, 0.12); color: #818cf8; border-color: rgba(99, 102, 241, 0.3); }
-.tag-badge.website-none { background: rgba(244, 63, 94, 0.12); color: var(--accent-danger-text); border-color: rgba(244, 63, 94, 0.3); }
+.tag-badge.website-none { background: rgba(249, 115, 22, 0.12); color: var(--accent-danger-text); border-color: rgba(249, 115, 22, 0.3); }
 .tag-badge.website-bad { background: rgba(245, 158, 11, 0.12); color: var(--accent-warning-text); border-color: rgba(245, 158, 11, 0.3); }
-.tag-badge.reviews-low { background: rgba(139, 92, 246, 0.12); color: var(--accent-purple-text); border-color: rgba(139, 92, 246, 0.3); }
+.tag-badge.reviews-low { background: rgba(2, 132, 199, 0.12); color: var(--accent-nfc-text); border-color: rgba(2, 132, 199, 0.3); }
 
 /* Card Meta Items */
 .card-meta-row {
@@ -325,7 +324,7 @@
 
 .card-btn:hover {
   background: var(--crm-bg-surface-elevated);
-  color: #ffffff;
+  color: var(--text-primary);
   border-color: var(--crm-border-medium);
 }
 

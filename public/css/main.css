@@ -1,43 +1,44 @@
 /* ==========================================================================
-   Hubly CRM Design System - Light / Dark Theme Architecture (2026 Edition)
+   Hubly CRM Design System - Accessible Dark & Light Modes (Color-Blind Friendly)
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap');
 
-/* Default Theme: Dark Obsidian / Hubly Dark */
+/* Default Theme: Deep Midnight Navy / Accessible Dark */
 :root, [data-theme="dark"] {
-  --crm-bg-canvas: #070a12;
-  --crm-bg-sidebar: #0d1424;
-  --crm-bg-header: rgba(13, 20, 36, 0.88);
-  --crm-bg-card: #121c32;
-  --crm-bg-card-hover: #182542;
-  --crm-bg-surface-elevated: #1a2847;
-  --crm-bg-input: #090f1d;
+  --crm-bg-canvas: #0b0f19;
+  --crm-bg-sidebar: #0f172a;
+  --crm-bg-header: rgba(15, 23, 42, 0.9);
+  --crm-bg-card: #141e33;
+  --crm-bg-card-hover: #1b2844;
+  --crm-bg-surface-elevated: #1e2d4d;
+  --crm-bg-input: #0a1120;
   
   --crm-border-subtle: rgba(255, 255, 255, 0.08);
   --crm-border-medium: rgba(255, 255, 255, 0.16);
   --crm-border-focus: #38bdf8;
 
   --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
 
-  --accent-primary: #38bdf8;
+  /* Accessible High-Contrast Accents (No harsh fuchsias/pinks) */
+  --accent-primary: #38bdf8;         /* Cyan / Sky Blue */
   --accent-primary-hover: #0ea5e9;
-  --accent-secondary: #6366f1;
-  --accent-success: #10b981;
+  --accent-secondary: #6366f1;       /* Indigo Blue */
+  --accent-success: #10b981;         /* Emerald Green */
   --accent-success-text: #34d399;
-  --accent-warning: #f59e0b;
+  --accent-warning: #f59e0b;         /* Warm Gold Amber */
   --accent-warning-text: #fbbf24;
-  --accent-danger: #f43f5e;
-  --accent-danger-text: #fb7185;
-  --accent-purple: #a855f7;
-  --accent-purple-text: #c084fc;
+  --accent-danger: #f97316;          /* Coral Orange / Rust */
+  --accent-danger-text: #fb923c;
+  --accent-nfc: #0284c7;             /* Vibrant Cobalt Blue */
+  --accent-nfc-text: #38bdf8;
   --accent-whatsapp: #25d366;
 
-  --crm-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
-  --crm-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
-  --crm-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.6);
+  --crm-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --crm-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --crm-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.65);
 
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -47,11 +48,11 @@
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Light Theme: Hubly Clean Light */
+/* Light Theme: Hubly Crisp Clean Light */
 [data-theme="light"] {
   --crm-bg-canvas: #f8fafc;
   --crm-bg-sidebar: #ffffff;
-  --crm-bg-header: rgba(255, 255, 255, 0.9);
+  --crm-bg-header: rgba(255, 255, 255, 0.92);
   --crm-bg-card: #ffffff;
   --crm-bg-card-hover: #f1f5f9;
   --crm-bg-surface-elevated: #ffffff;
@@ -63,7 +64,7 @@
 
   --text-primary: #0f172a;
   --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  --text-muted: #64748b;
 
   --accent-primary: #0284c7;
   --accent-primary-hover: #0369a1;
@@ -72,10 +73,10 @@
   --accent-success-text: #059669;
   --accent-warning: #d97706;
   --accent-warning-text: #b45309;
-  --accent-danger: #e11d48;
-  --accent-danger-text: #be123c;
-  --accent-purple: #9333ea;
-  --accent-purple-text: #7e22ce;
+  --accent-danger: #ea580c;
+  --accent-danger-text: #c2410c;
+  --accent-nfc: #0369a1;
+  --accent-nfc-text: #0284c7;
   --accent-whatsapp: #16a34a;
 
   --crm-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -102,7 +103,7 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* App Layout Grid */
+/* Layout Grid */
 .app-container {
   display: flex;
   min-height: 100vh;
@@ -138,13 +139,13 @@ body {
   width: 38px;
   height: 38px;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, #38bdf8 0%, #6366f1 100%);
+  background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
   color: #fff;
-  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25);
 }
 
 .logo-text h1 {
@@ -356,6 +357,28 @@ body {
   gap: 10px;
 }
 
+/* Theme Toggle Button */
+.theme-switch-btn {
+  background: var(--crm-bg-input);
+  border: 1px solid var(--crm-border-subtle);
+  color: var(--text-primary);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s var(--ease-spring);
+}
+
+.theme-switch-btn:hover {
+  background: var(--crm-bg-surface-elevated);
+  border-color: var(--crm-border-medium);
+  transform: scale(1.05);
+}
+
 /* View Sections */
 .view-section {
   display: none;
@@ -430,8 +453,8 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, #0284c7 100%);
-  color: #fff;
+  background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+  color: #ffffff;
   box-shadow: 0 2px 8px rgba(56, 189, 248, 0.25);
 }
 
@@ -480,7 +503,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(6px);
   z-index: 1000;
   align-items: center;

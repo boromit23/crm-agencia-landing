@@ -302,9 +302,9 @@
 }
 
 .opportunity-score-badge {
-  background: rgba(244, 63, 94, 0.12);
+  background: rgba(249, 115, 22, 0.12);
   color: var(--accent-danger-text);
-  border: 1px solid rgba(244, 63, 94, 0.25);
+  border: 1px solid rgba(249, 115, 22, 0.25);
   padding: 2px 7px;
   border-radius: var(--radius-full);
   font-size: 11px;

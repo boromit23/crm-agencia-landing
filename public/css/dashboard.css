@@ -1,7 +1,7 @@
-/* Hubly CRM Executive Dashboard Styles */
+/* Hubly CRM Executive Dashboard Styles - Accessible Colors (No Fuchsia) */
 
 .dashboard-hero-banner {
-  background: linear-gradient(135deg, rgba(56, 189, 248, 0.12) 0%, rgba(99, 102, 241, 0.06) 100%);
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.12) 0%, rgba(99, 102, 241, 0.08) 100%);
   border: 1px solid var(--crm-border-medium);
   border-radius: var(--radius-lg);
   padding: 20px 24px;
@@ -22,7 +22,7 @@
   right: -10%;
   width: 250px;
   height: 250px;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -303,28 +303,6 @@
   color: var(--text-muted);
   white-space: nowrap;
   font-family: 'JetBrains Mono', monospace;
-}
-
-/* Theme Toggle Switch */
-.theme-switch-btn {
-  background: var(--crm-bg-input);
-  border: 1px solid var(--crm-border-subtle);
-  color: var(--text-primary);
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 16px;
-  transition: all 0.2s var(--ease-spring);
-}
-
-.theme-switch-btn:hover {
-  background: var(--crm-bg-surface-elevated);
-  border-color: var(--crm-border-medium);
-  transform: scale(1.05);
 }
 
 @media (max-width: 900px) {
