@@ -1,0 +1,202 @@
+/* Street Mode & Mobile NFC Sales Capture Styles */
+
+.street-mode-container {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.street-badge-banner {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.05) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.street-banner-info h3 {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--accent-warning);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.street-banner-info p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* Quick Stats Bar in Street Mode */
+.street-mini-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.street-stat-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  text-align: center;
+}
+
+.street-stat-num {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--accent-primary);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.street-stat-lbl {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Fast Capture Card Form */
+.street-capture-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+}
+
+.fast-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.full-col {
+  grid-column: 1 / -1;
+}
+
+/* Service / Sale Type Selector Buttons */
+.offer-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.offer-option-card {
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.offer-option-card:hover {
+  border-color: var(--border-strong);
+}
+
+.offer-option-card.selected {
+  background: rgba(56, 189, 248, 0.12);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 1px var(--accent-primary);
+}
+
+.offer-option-card .offer-icon {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.offer-option-card .offer-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.offer-option-card .offer-price {
+  font-size: 11px;
+  color: var(--accent-success);
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+/* NFC Direct Sale Box (revealed when NFC option active) */
+.nfc-sale-details-box {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.nfc-sale-details-box h4 {
+  font-size: 13.5px;
+  color: var(--accent-success);
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.payment-method-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.payment-pill {
+  padding: 6px 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.payment-pill.selected {
+  background: var(--accent-success);
+  color: #ffffff;
+  border-color: var(--accent-success);
+}
+
+/* GPS Button */
+.input-with-action {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-gps {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--accent-primary);
+  padding: 0 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.btn-gps:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-primary);
+}
+
+@media (max-width: 600px) {
+  .fast-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
