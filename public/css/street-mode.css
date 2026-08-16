@@ -1,13 +1,13 @@
-/* Street Mode & Mobile NFC Sales Capture Styles */
+/* Street Mode & GPS Radar Proximity Scanner Styles */
 
 .street-mode-container {
-  max-width: 680px;
+  max-width: 780px;
   margin: 0 auto;
 }
 
 .street-badge-banner {
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.05) 100%);
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.12) 0%, rgba(2, 132, 199, 0.04) 100%);
+  border: 1px solid var(--crm-border-medium);
   border-radius: var(--radius-lg);
   padding: 18px 20px;
   margin-bottom: 20px;
@@ -19,7 +19,7 @@
 .street-banner-info h3 {
   font-size: 16px;
   font-weight: 800;
-  color: var(--accent-warning);
+  color: var(--accent-primary);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -31,6 +31,45 @@
   margin-top: 2px;
 }
 
+/* Street Subtabs */
+.street-subtabs {
+  display: flex;
+  background: var(--crm-bg-input);
+  border: 1px solid var(--crm-border-subtle);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  gap: 4px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.street-subtab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.street-subtab-btn:hover {
+  color: var(--text-primary);
+}
+
+.street-subtab-btn.active {
+  background: var(--crm-bg-surface-elevated);
+  color: var(--accent-primary);
+  box-shadow: var(--crm-shadow-sm);
+}
+
 /* Quick Stats Bar in Street Mode */
 .street-mini-stats {
   display: grid;
@@ -40,11 +79,12 @@
 }
 
 .street-stat-box {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  background: var(--crm-bg-card);
+  border: 1px solid var(--crm-border-subtle);
   border-radius: var(--radius-md);
   padding: 12px;
   text-align: center;
+  box-shadow: var(--crm-shadow-sm);
 }
 
 .street-stat-num {
@@ -61,13 +101,146 @@
   text-transform: uppercase;
 }
 
+/* ========================================================== */
+/* GPS PROXIMITY RADAR COMPONENT */
+/* ========================================================== */
+.gps-radar-card {
+  background: var(--crm-bg-card);
+  border: 1px solid var(--crm-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--crm-shadow-md);
+  margin-bottom: 20px;
+}
+
+.radar-trigger-hero {
+  text-align: center;
+  padding: 20px 10px;
+  background: var(--crm-bg-input);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--crm-border-medium);
+  margin-bottom: 18px;
+}
+
+.btn-radar-scan {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  color: #fff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: var(--radius-full);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(2, 132, 199, 0.35);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s var(--ease-spring);
+}
+
+.btn-radar-scan:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.45);
+}
+
+.btn-radar-scan.scanning {
+  background: #0f172a;
+  border: 1px solid var(--accent-primary);
+  animation: pulseScan 1.5s infinite;
+}
+
+@keyframes pulseScan {
+  0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); }
+  70% { box-shadow: 0 0 0 16px rgba(56, 189, 248, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+}
+
+/* Radar Controls Grid */
+.radar-controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.current-gps-location-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--crm-bg-surface-elevated);
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  border: 1px solid var(--crm-border-subtle);
+  margin-bottom: 16px;
+}
+
+.current-gps-location-pill strong {
+  color: var(--accent-primary);
+}
+
+/* Nearby Businesses List */
+.nearby-prospects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nearby-biz-card {
+  background: var(--crm-bg-input);
+  border: 1px solid var(--crm-border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.18s;
+  position: relative;
+}
+
+.nearby-biz-card:hover {
+  background: var(--crm-bg-card-hover);
+  border-color: var(--crm-border-medium);
+}
+
+.nearby-biz-card.highlight {
+  border-left: 4px solid var(--accent-primary);
+}
+
+.nearby-biz-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.nearby-distance-tag {
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--accent-primary);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  font-size: 11.5px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+}
+
+.nearby-actions-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
 /* Fast Capture Card Form */
 .street-capture-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  background: var(--crm-bg-card);
+  border: 1px solid var(--crm-border-subtle);
   border-radius: var(--radius-lg);
   padding: 24px;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--crm-shadow-md);
 }
 
 .fast-form-grid {
@@ -76,11 +249,6 @@
   gap: 16px;
 }
 
-.full-col {
-  grid-column: 1 / -1;
-}
-
-/* Service / Sale Type Selector Buttons */
 .offer-selector-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -89,8 +257,8 @@
 }
 
 .offer-option-card {
-  background: var(--bg-input);
-  border: 1px solid var(--border-subtle);
+  background: var(--crm-bg-input);
+  border: 1px solid var(--crm-border-subtle);
   border-radius: var(--radius-md);
   padding: 14px 10px;
   text-align: center;
@@ -100,7 +268,7 @@
 }
 
 .offer-option-card:hover {
-  border-color: var(--border-strong);
+  border-color: var(--crm-border-medium);
 }
 
 .offer-option-card.selected {
@@ -122,12 +290,12 @@
 
 .offer-option-card .offer-price {
   font-size: 11px;
-  color: var(--accent-success);
+  color: var(--accent-success-text);
   font-weight: 700;
   margin-top: 2px;
+  font-family: 'JetBrains Mono', monospace;
 }
 
-/* NFC Direct Sale Box (revealed when NFC option active) */
 .nfc-sale-details-box {
   background: rgba(16, 185, 129, 0.08);
   border: 1px solid rgba(16, 185, 129, 0.25);
@@ -138,7 +306,7 @@
 
 .nfc-sale-details-box h4 {
   font-size: 13.5px;
-  color: var(--accent-success);
+  color: var(--accent-success-text);
   font-weight: 700;
   margin-bottom: 12px;
   display: flex;
@@ -154,8 +322,8 @@
 
 .payment-pill {
   padding: 6px 12px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  background: var(--crm-bg-card);
+  border: 1px solid var(--crm-border-subtle);
   border-radius: var(--radius-full);
   font-size: 12px;
   font-weight: 600;
@@ -169,15 +337,14 @@
   border-color: var(--accent-success);
 }
 
-/* GPS Button */
 .input-with-action {
   display: flex;
   gap: 8px;
 }
 
 .btn-gps {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  background: var(--crm-bg-surface-elevated);
+  border: 1px solid var(--crm-border-subtle);
   color: var(--accent-primary);
   padding: 0 14px;
   border-radius: var(--radius-md);
@@ -191,12 +358,12 @@
 }
 
 .btn-gps:hover {
-  background: var(--bg-card-hover);
+  background: var(--crm-bg-card-hover);
   border-color: var(--accent-primary);
 }
 
 @media (max-width: 600px) {
-  .fast-form-grid {
+  .fast-form-grid, .radar-controls-grid {
     grid-template-columns: 1fr;
   }
 }

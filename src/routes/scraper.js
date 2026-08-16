@@ -7,7 +7,7 @@ router.get('/search', async (req, res) => {
   try {
     const { niche, location, limit } = req.query;
     if (!niche || !location) {
-      return res.status(400).json({ success: false, error: 'Se requiere nicho (ej. Talleres mecánicos) y ubicación (ej. Valencia, Venezuela)' });
+      return res.status(400).json({ success: false, error: 'Se requiere nicho y ubicación' });
     }
 
     const maxLimit = Math.min(50, Math.max(5, parseInt(limit) || 25));
@@ -15,6 +15,18 @@ router.get('/search', async (req, res) => {
     res.json({ success: true, data });
   } catch (error) {
     console.error('Error in scraper search:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// GET /api/scraper/nearby - Search nearby businesses around GPS location within radius (500m, 1000m)
+router.get('/nearby', async (req, res) => {
+  try {
+    const { lat, lon, radius, category } = req.query;
+    const data = await scraper.searchNearby(lat, lon, radius || 500, category || 'all');
+    res.json({ success: true, data });
+  } catch (error) {
+    console.error('Error in nearby scraper:', error);
     res.status(500).json({ success: false, error: error.message });
   }
 });
