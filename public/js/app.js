@@ -1,12 +1,13 @@
-// Main Application Controller & View Router
+// Main Application Controller & View Router - Attio / Linear / Dribbble 2026
 
 const App = {
   currentView: 'pipeline',
 
   init() {
-    console.log('🚀 Iniciando CRM Agencia Digital...');
+    console.log('🚀 Iniciando GrowthCRM Agencia Digital (UI 2026 Enhanced)...');
     this.setupRouting();
     this.setupModals();
+    this.setupShortcuts();
     this.registerPWA();
 
     // Initialize modules
@@ -57,8 +58,7 @@ const App = {
       scraper: { title: 'Buscador de Google Maps', desc: 'Encuentra negocios sin web y con pocas reseñas' },
       street: { title: 'Modo Calle & Venta NFC', desc: 'Captura rápida en 15s y registro de ventas presenciales' },
       webhooks: { title: 'Facebook Ads & Webhooks', desc: 'Recepción automática de prospectos desde campañas' },
-      analytics: { title: 'Reportes y Métricas', desc: 'Rendimiento comercial y facturación por canal' },
-      settings: { title: 'Configuración de la Agencia', desc: 'Ajustes generales, moneda y precios base' }
+      analytics: { title: 'Reportes y Métricas', desc: 'Rendimiento comercial y facturación por canal' }
     };
 
     const header = titleMap[viewName] || { title: 'CRM Agencia', desc: '' };
@@ -71,6 +71,29 @@ const App = {
     if (viewName === 'analytics' && window.Analytics) window.Analytics.loadMetrics();
     if (viewName === 'street' && window.StreetMode) window.StreetMode.loadStreetStats();
     if (viewName === 'pipeline' && window.Pipeline) window.Pipeline.renderCards();
+  },
+
+  setupShortcuts() {
+    // CMD+K / CTRL+K Global Search Omnibox Trigger
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        const omni = document.getElementById('globalOmniboxInput');
+        if (omni) {
+          omni.focus();
+          omni.select();
+        }
+      }
+    });
+
+    // Click on Omnibox Container triggers input focus
+    const omniContainer = document.getElementById('globalOmniboxContainer');
+    if (omniContainer) {
+      omniContainer.addEventListener('click', () => {
+        const input = document.getElementById('globalOmniboxInput');
+        if (input) input.focus();
+      });
+    }
   },
 
   setupModals() {
@@ -108,7 +131,7 @@ const App = {
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js').then(
-          (reg) => console.log('✅ ServiceWorker registrado con éxito:', reg.scope),
+          (reg) => console.log('✅ ServiceWorker registrado:', reg.scope),
           (err) => console.warn('ServiceWorker error:', err)
         );
       });

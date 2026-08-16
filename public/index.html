@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>GrowthCRM | Landing Pages, Google Maps & NFC Cards</title>
-  <meta name="description" content="CRM especializado para captación y ventas de Landing Pages, Optimización de Google Maps y Tarjetas NFC.">
+  <meta name="description" content="CRM de alto rendimiento para captación y ventas de Landing Pages, Optimización de Google Maps y Tarjetas NFC.">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#0f172a">
+  <meta name="theme-color" content="#070a12">
 
   <!-- CSS Stylesheets -->
   <link rel="stylesheet" href="/css/main.css">
@@ -22,7 +22,7 @@
     <!-- DESKTOP SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-header">
-        <div class="logo-badge">🚀</div>
+        <div class="logo-badge">⚡</div>
         <div class="logo-text">
           <h1>GrowthCRM</h1>
           <p>Landing & NFC Agency</p>
@@ -67,7 +67,7 @@
         <div class="user-status">
           <span class="status-dot"></span>
           <div>
-            <div style="font-weight: 700; color: #fff; font-size: 13px;">Supabase Cloud</div>
+            <div style="font-weight: 700; color: #fff; font-size: 12.5px;">Supabase Cloud</div>
             <div style="font-size: 11px; color: var(--text-muted);">Sincronización en vivo</div>
           </div>
         </div>
@@ -77,16 +77,25 @@
     <!-- MAIN WRAPPER -->
     <div class="main-wrapper">
 
-      <!-- TOP APP HEADER -->
+      <!-- TOP APP HEADER WITH CENTRAL OMNIBOX -->
       <header class="top-header">
-        <div class="page-title">
-          <h2>Pipeline de Ventas</h2>
-          <p>Gestiona tus prospectos y etapas de cierre</p>
+        <div class="header-left">
+          <div class="page-title">
+            <h2>Pipeline de Ventas</h2>
+            <p>Gestiona tus prospectos y etapas de cierre</p>
+          </div>
+        </div>
+
+        <!-- Central Omnibox Command Bar -->
+        <div class="omnibox-search" id="globalOmniboxContainer" title="Buscar prospectos (Atajo: Ctrl+K / ⌘K)">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="globalOmniboxInput" placeholder="Buscar negocio, contacto, teléfono, ciudad o notas...">
+          <kbd class="omnibox-shortcut">⌘K</kbd>
         </div>
 
         <div class="header-actions">
           <button class="btn btn-primary" id="btnNewLead">
-            <span>➕</span> <span>Nuevo Prospecto</span>
+            <span>＋</span> <span>Nuevo Prospecto</span>
           </button>
         </div>
       </header>
@@ -99,7 +108,7 @@
           <div class="search-filter-box">
             <div class="search-input-wrapper">
               <span class="search-icon">🔍</span>
-              <input type="text" id="pipelineSearchInput" class="form-input" placeholder="Buscar por negocio, contacto, teléfono o ciudad...">
+              <input type="text" id="pipelineSearchInput" class="form-input" placeholder="Filtrar por negocio, contacto, teléfono...">
             </div>
           </div>
 
@@ -173,7 +182,7 @@
 
         <!-- Grid of Prospects -->
         <div class="prospects-grid" id="prospectsGrid">
-          <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--text-muted); background: var(--bg-surface); border-radius: var(--radius-lg); border: 1px dashed var(--border-subtle);">
+          <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--text-muted); background: var(--crm-bg-sidebar); border-radius: var(--radius-lg); border: 1px dashed var(--crm-border-subtle);">
             <div style="font-size: 40px; margin-bottom: 12px;">🗺️</div>
             <h4 style="font-size: 16px; color: var(--text-primary); margin-bottom: 6px;">Listo para prospectar clientes locales</h4>
             <p style="font-size: 13px; max-width: 450px; margin: 0 auto;">Ingresa un nicho y ciudad arriba o selecciona una categoría sugerida para descubrir prospectos calificados en Google Maps.</p>
@@ -202,11 +211,11 @@
               <div class="street-stat-lbl">NFC Vendidas</div>
             </div>
             <div class="street-stat-box">
-              <div class="street-stat-num" id="streetRevenueToday" style="color: var(--accent-success);">$0</div>
+              <div class="street-stat-num" id="streetRevenueToday" style="color: var(--accent-success-text);">$0</div>
               <div class="street-stat-lbl">Recaudado</div>
             </div>
             <div class="street-stat-box">
-              <div class="street-stat-num" id="streetCardsInBag" style="color: var(--accent-warning);">15</div>
+              <div class="street-stat-num" id="streetCardsInBag" style="color: var(--accent-warning-text);">15</div>
               <div class="street-stat-lbl">En Mochila</div>
             </div>
           </div>

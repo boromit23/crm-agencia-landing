@@ -1,9 +1,9 @@
-// Pipeline Kanban Board Module
+// Pipeline Kanban Board Module - Modern Attio / Linear / Dribbble UI
 
 const Pipeline = {
   stages: [
     { id: 'nuevo_prospecto', label: 'Nuevo Prospecto', icon: '📥', color: '#38bdf8' },
-    { id: 'sin_web_gbp', label: 'Sin Web (GBP + Landing)', icon: '🌐', color: '#ec4899' },
+    { id: 'sin_web_gbp', label: 'Sin Web (GBP + Landing)', icon: '🌐', color: '#f43f5e' },
     { id: 'web_deficiente', label: 'Web Deficiente (Rediseño)', icon: '⚡', color: '#f59e0b' },
     { id: 'nfc_calle', label: 'Tarjeta NFC Reseñas', icon: '💳', color: '#8b5cf6' },
     { id: 'contactado', label: 'Contactado / Demo', icon: '📞', color: '#06b6d4' },
@@ -31,13 +31,13 @@ const Pipeline = {
       <div class="kanban-column" data-stage="${stage.id}" id="col-${stage.id}">
         <div class="column-header">
           <div class="column-title-group">
-            <span class="column-color-indicator" style="background: ${stage.color};"></span>
+            <span class="column-color-indicator" style="background: ${stage.color}; color: ${stage.color};"></span>
             <span class="column-title">${stage.icon} ${stage.label}</span>
           </div>
           <span class="column-count" id="count-${stage.id}">0</span>
         </div>
         <div class="column-cards" data-stage="${stage.id}" id="cards-${stage.id}">
-          <div class="loading-cards" style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 12px;">Cargando...</div>
+          <div class="skeleton-card" style="height: 90px; border-radius: 8px; background: rgba(255,255,255,0.03); margin-bottom: 8px;"></div>
         </div>
       </div>
     `).join('');
@@ -76,7 +76,8 @@ const Pipeline = {
         const matchContact = (lead.contact_name || '').toLowerCase().includes(q);
         const matchPhone = (lead.phone || '').includes(q);
         const matchCity = (lead.city || '').toLowerCase().includes(q);
-        if (!matchName && !matchContact && !matchPhone && !matchCity) return false;
+        const matchNotes = (lead.notes || '').toLowerCase().includes(q);
+        if (!matchName && !matchContact && !matchPhone && !matchCity && !matchNotes) return false;
       }
       return true;
     });
@@ -104,36 +105,49 @@ const Pipeline = {
     if (badge) badge.innerText = filteredLeads.length;
   },
 
+  getCategoryAvatar(category = '', name = '') {
+    const cat = (category + ' ' + name).toLowerCase();
+    if (cat.includes('dent') || cat.includes('odont')) return '🦷';
+    if (cat.includes('pizz') || cat.includes('restaur') || cat.includes('comida') || cat.includes('bar') || cat.includes('caf')) return '🍕';
+    if (cat.includes('taller') || cat.includes('mecanic') || cat.includes('auto') || cat.includes('coche')) return '🚗';
+    if (cat.includes('barber') || cat.includes('salon') || cat.includes('estetic') || cat.includes('belleza') || cat.includes('spa') || cat.includes('uña')) return '💅';
+    if (cat.includes('gym') || cat.includes('gimnasio') || cat.includes('fitness')) return '🏋️';
+    if (cat.includes('medic') || cat.includes('salud') || cat.includes('clinic')) return '🏥';
+    return '🏢';
+  },
+
   createLeadCardElement(lead) {
     const card = document.createElement('div');
     card.className = 'kanban-card';
     card.setAttribute('draggable', 'true');
     card.setAttribute('data-id', lead.id);
 
-    // Badges & Source tags
+    const avatar = this.getCategoryAvatar(lead.category, lead.business_name);
+
+    // Source Tag
     let sourceBadge = '<span class="tag-badge source-maps">🗺️ Maps</span>';
     if (lead.source === 'calle_nfc') sourceBadge = '<span class="tag-badge source-calle">💳 Calle NFC</span>';
-    if (lead.source === 'facebook_ads') sourceBadge = '<span class="tag-badge source-fb">⚡ Facebook Ads</span>';
-    if (lead.source === 'web_form') sourceBadge = '<span class="tag-badge">🌐 Form Web</span>';
+    if (lead.source === 'facebook_ads') sourceBadge = '<span class="tag-badge source-fb">⚡ FB Ads</span>';
+    if (lead.source === 'web_form') sourceBadge = '<span class="tag-badge">🌐 Form</span>';
 
+    // Website Tag
     let webBadge = lead.has_website 
       ? '<span class="tag-badge website-bad">⚡ Web Lenta / Rediseño</span>'
-      : '<span class="tag-badge website-none">🚩 Sin Web (Gifting GBP)</span>';
+      : '<span class="tag-badge website-none">🚩 Sin Web (GBP Gift)</span>';
 
-    let reviewsBadge = lead.reviews_count !== null 
-      ? `<span class="tag-badge ${lead.reviews_count < 20 ? 'reviews-low' : ''}">⭐ ${lead.rating || '4.0'} (${lead.reviews_count} reseñas)</span>` 
+    // Reviews Tag
+    let reviewsBadge = (lead.reviews_count !== null && lead.reviews_count !== undefined)
+      ? `<span class="tag-badge ${lead.reviews_count < 20 ? 'reviews-low' : ''}">⭐ ${lead.rating || '4.0'} (${lead.reviews_count})</span>` 
       : '';
 
     card.innerHTML = `
-      <div class="card-top">
-        <div class="card-business-name">${lead.business_name}</div>
+      <div class="card-head">
+        <div class="card-avatar">${avatar}</div>
+        <div class="card-title-group">
+          <div class="card-business-name" title="${lead.business_name}">${lead.business_name}</div>
+          <div class="card-subtitle">${lead.city || 'Ubicación local'} ${lead.category ? '· ' + lead.category : ''}</div>
+        </div>
         <div class="card-deal-value">${API.formatCurrency(lead.deal_value || 0)}</div>
-      </div>
-
-      <div class="card-meta">
-        ${lead.contact_name ? `<div class="card-meta-item"><span>👤</span> <span>${lead.contact_name}</span></div>` : ''}
-        ${lead.phone ? `<div class="card-meta-item"><span>📞</span> <span>${lead.phone}</span></div>` : ''}
-        ${lead.city ? `<div class="card-meta-item"><span>📍</span> <span>${lead.city}</span></div>` : ''}
       </div>
 
       <div class="card-tags">
@@ -142,11 +156,19 @@ const Pipeline = {
         ${reviewsBadge}
       </div>
 
-      <div class="card-actions">
+      <div class="card-meta-row">
+        <div class="card-meta-contact">
+          <span>👤</span>
+          <span>${lead.contact_name || lead.phone || 'Sin contacto'}</span>
+        </div>
+        <span class="card-date">${new Date(lead.created_at).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}</span>
+      </div>
+
+      <div class="card-action-dock">
         <div class="action-buttons-group">
           ${lead.phone || lead.whatsapp ? `
             <button class="card-btn btn-wa-direct" title="Abrir WhatsApp con Guion" onclick="Pipeline.openLeadScriptModal('${lead.id}')">
-              💬
+              <span>💬</span> <span>Guion WA</span>
             </button>
           ` : ''}
           ${lead.maps_url ? `
@@ -161,7 +183,6 @@ const Pipeline = {
             🗑️
           </button>
         </div>
-        <span class="card-date">${new Date(lead.created_at).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}</span>
       </div>
     `;
 
@@ -233,11 +254,28 @@ const Pipeline = {
       });
     });
 
-    // Search input
+    // Search input (toolbar)
     const searchInput = document.getElementById('pipelineSearchInput');
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
         this.searchQuery = e.target.value.trim();
+        // Sync with omnibox if exists
+        const omni = document.getElementById('globalOmniboxInput');
+        if (omni && omni.value !== this.searchQuery) omni.value = this.searchQuery;
+        this.renderCards();
+      });
+    }
+
+    // Global Omnibox Search input (header)
+    const omniInput = document.getElementById('globalOmniboxInput');
+    if (omniInput) {
+      omniInput.addEventListener('input', (e) => {
+        this.searchQuery = e.target.value.trim();
+        const searchInput = document.getElementById('pipelineSearchInput');
+        if (searchInput && searchInput.value !== this.searchQuery) searchInput.value = this.searchQuery;
+        if (window.App && window.App.currentView !== 'pipeline') {
+          window.App.switchView('pipeline');
+        }
         this.renderCards();
       });
     }
