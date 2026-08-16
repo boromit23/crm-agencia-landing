@@ -10,6 +10,7 @@ const webhooksRouter = require('./src/routes/webhooks');
 const analyticsRouter = require('./src/routes/analytics');
 const settingsRouter = require('./src/routes/settings');
 const aiAgentRouter = require('./src/routes/ai_agent');
+const { router: authRouter } = require('./src/routes/auth');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // API Routes
+app.use('/api/auth', authRouter);
 app.use('/api/leads', leadsRouter);
 app.use('/api/scraper', scraperRouter);
 app.use('/api/sales', salesRouter);

@@ -16,10 +16,65 @@
   <link rel="stylesheet" href="/css/street-mode.css">
   <link rel="stylesheet" href="/css/analytics.css">
   <link rel="stylesheet" href="/css/ads_agent.css">
+  <link rel="stylesheet" href="/css/auth.css">
 </head>
 <body>
 
-  <div class="app-container">
+  <!-- ========================================================== -->
+  <!-- PIN ACCESS LOCK SCREEN -->
+  <!-- ========================================================== -->
+  <div class="auth-lock-overlay" id="authLockOverlay">
+    <div class="auth-lock-card">
+      <div class="auth-logo-badge">⚡</div>
+      <h2>GrowthCRM</h2>
+      <p>Acceso protegido. Introduce tu PIN de seguridad para continuar.</p>
+
+      <form id="pinAuthForm">
+        <div class="pin-input-wrapper">
+          <input 
+            type="password" 
+            id="pinInputField" 
+            class="pin-input-field" 
+            placeholder="••••••" 
+            maxlength="8" 
+            inputmode="numeric" 
+            pattern="[0-9]*" 
+            autocomplete="off" 
+            required
+          >
+        </div>
+
+        <div id="pinErrorMsg" style="display: none; color: #f43f5e; font-size: 12.5px; font-weight: 700; margin-bottom: 12px;"></div>
+
+        <!-- Numeric On-Screen Keypad -->
+        <div class="numpad-grid">
+          <button type="button" class="numpad-btn" data-val="1">1</button>
+          <button type="button" class="numpad-btn" data-val="2">2</button>
+          <button type="button" class="numpad-btn" data-val="3">3</button>
+          <button type="button" class="numpad-btn" data-val="4">4</button>
+          <button type="button" class="numpad-btn" data-val="5">5</button>
+          <button type="button" class="numpad-btn" data-val="6">6</button>
+          <button type="button" class="numpad-btn" data-val="7">7</button>
+          <button type="button" class="numpad-btn" data-val="8">8</button>
+          <button type="button" class="numpad-btn" data-val="9">9</button>
+          <button type="button" class="numpad-btn" data-val="clear" style="font-size: 13px; color: #94a3b8;">Borrar</button>
+          <button type="button" class="numpad-btn" data-val="0">0</button>
+          <button type="button" class="numpad-btn" data-val="backspace">⌫</button>
+        </div>
+
+        <label class="auth-remember-row">
+          <input type="checkbox" id="rememberDeviceCheckbox" checked>
+          <span>Recordar acceso en este dispositivo</span>
+        </label>
+
+        <button type="submit" class="btn-unlock" id="btnUnlockCrm">
+          <span>🔓</span> <span>Desbloquear CRM</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="app-container" style="display: none;">
 
     <!-- DESKTOP SIDEBAR -->
     <aside class="sidebar">
@@ -82,7 +137,10 @@
             <div style="font-size: 10.5px; color: var(--text-muted);">Sincronizado</div>
           </div>
         </div>
-        <button class="theme-switch-btn" title="Cambiar Tema (Claro / Oscuro)">☀️</button>
+        <div style="display: flex; gap: 6px; align-items: center;">
+          <button class="theme-switch-btn" title="Cambiar Tema (Claro / Oscuro)">☀️</button>
+          <button class="btn-lock-crm" id="btnLockCrm" title="Bloquear CRM">🔒 Bloquear</button>
+        </div>
       </div>
     </aside>
 
@@ -1169,6 +1227,7 @@
 
   <!-- Scripts -->
   <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
   <script src="/js/dashboard.js"></script>
   <script src="/js/pipeline.js"></script>
   <script src="/js/scraper.js"></script>

@@ -6,6 +6,7 @@ const App = {
 
   init() {
     console.log('🚀 Iniciando GrowthCRM (Hubly Edition 2026)...');
+    if (window.Auth) window.Auth.init();
     this.initTheme();
     this.setupRouting();
     this.setupModals();
