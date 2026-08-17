@@ -26,8 +26,12 @@ const API = {
 
       return data;
     } catch (err) {
-      console.error(`[API Error] ${endpoint}:`, err.message);
-      this.toast(err.message, 'error');
+      console.warn(`[API Info] ${endpoint}:`, err.message);
+      // Only toast on explicit user actions (POST, PUT, DELETE, PATCH) or when not silent
+      const isWriteMethod = ['POST', 'PUT', 'DELETE', 'PATCH'].includes((options.method || 'GET').toUpperCase());
+      if (isWriteMethod && !options.silent) {
+        this.toast(err.message, 'error');
+      }
       throw err;
     }
   },

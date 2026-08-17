@@ -2,11 +2,7 @@ require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
 
 const supabaseUrl = process.env.SUPABASE_URL || 'https://opaqkietypicupvipwgx.supabase.co';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseKey) {
-  console.warn('⚠️ Supabase credentials missing from environment.');
-}
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wYXFraWV0eXBpY3Vwdmlwd2d4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Njg5NTE4MCwiZXhwIjoyMTAyNDcxMTgwfQ.rnDHVJiWsdKSmMd3qjWLXVruaEed-t8Ai1NM9zD3EL8';
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 

@@ -22,12 +22,12 @@ const Dashboard = {
         API.getSales()
       ]);
 
-      const summary = analyticsRes.data.summary || {};
-      const leads = leadsRes.data || [];
-      const sales = salesRes.data || [];
+      const data = analyticsRes?.data || {};
+      const leads = leadsRes?.data || [];
+      const sales = salesRes?.data || [];
 
-      this.renderKPIs(summary, leads, sales);
-      this.renderSalesGoal(summary.total_revenue || 0);
+      this.renderKPIs(data, leads, sales);
+      this.renderSalesGoal(data.totalRevenue || data.total_revenue || 0);
       this.renderConversionFunnel(leads);
       this.renderActivityFeed(leads, sales);
     } catch (err) {
@@ -35,14 +35,14 @@ const Dashboard = {
     }
   },
 
-  renderKPIs(summary, leads, sales) {
-    const totalRevenue = summary.total_revenue || 0;
-    const pipelineValue = summary.pipeline_value || 0;
-    const winRate = summary.win_rate || 0;
+  renderKPIs(data, leads, sales) {
+    const totalRevenue = data.totalRevenue || data.total_revenue || 0;
+    const pipelineValue = data.pipelineValue || data.pipeline_value || 0;
+    const winRate = data.winRate || data.win_rate || 0;
 
     // Calculate business model specific counts
     const streetVisits = leads.filter(l => l.source === 'calle_nfc').length;
-    const nfcSalesCount = sales.filter(s => s.service_type === 'nfc_tarjeta').length;
+    const nfcSalesCount = sales.filter(s => s.service_type === 'nfc_tarjeta' || s.service_type === 'nfc_card').length;
     const gbpLandingCount = leads.filter(l => l.stage === 'sin_web_gbp' || l.stage === 'ganado').length;
     const contactedCount = leads.filter(l => ['contactado', 'propuesta', 'ganado'].includes(l.stage)).length;
     const fbLeadsCount = leads.filter(l => l.source === 'facebook_ads').length;
