@@ -1,13 +1,36 @@
+# Dependencies
 node_modules/
+
+# Environment Variables & Secrets
 .env
-.DS_Store
-*.log
+.env.*
+*.env
+*.pem
+*.key
+*.cert
+
+# Vercel & Deployments
 .vercel
+.vercel/
+
+# Logs & Temporary Files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
+
+# Scripts with credentials / testing
 set_vercel_env.js
 setup_supabase.js
 seed_data.js
 update_maps_urls.js
 test_scraper.js
 seed_full_pipeline.js
+update_vercel_secrets.js
+check_live_api.js
+
+# Exclude non-public HTML
 *.html
 !public/**/*.html
