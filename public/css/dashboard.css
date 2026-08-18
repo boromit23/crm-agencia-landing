@@ -1,16 +1,16 @@
 /* Hubly CRM Executive Dashboard Styles - Accessible Colors (No Fuchsia) */
 
 .dashboard-hero-banner {
-  background: linear-gradient(135deg, rgba(56, 189, 248, 0.12) 0%, rgba(99, 102, 241, 0.08) 100%);
-  border: 1px solid var(--crm-border-medium);
+  background: linear-gradient(135deg, rgba(8, 12, 22, 0.88) 0%, rgba(15, 23, 42, 0.82) 100%), url('/img/crm_banner.jpg') center/cover no-repeat;
+  border: 1px solid rgba(56, 189, 248, 0.28);
   border-radius: var(--radius-lg);
-  padding: 20px 24px;
+  padding: 24px 28px;
   margin-bottom: 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  box-shadow: var(--crm-shadow-sm);
+  gap: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 24px rgba(56, 189, 248, 0.1);
   position: relative;
   overflow: hidden;
 }
@@ -22,17 +22,33 @@
   right: -10%;
   width: 250px;
   height: 250px;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }
 
+.hero-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: var(--accent-primary);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 .dashboard-greeting h2 {
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 800;
   letter-spacing: -0.025em;
   color: var(--text-primary);
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 
 .dashboard-greeting p {
