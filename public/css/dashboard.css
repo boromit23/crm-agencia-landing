@@ -27,33 +27,50 @@
   pointer-events: none;
 }
 
-.hero-badge-pill {
+.dashboard-hero-banner .hero-badge-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(56, 189, 248, 0.15);
-  border: 1px solid rgba(56, 189, 248, 0.35);
-  color: var(--accent-primary);
+  background: rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  color: #38bdf8 !important;
   font-size: 11px;
   font-weight: 700;
-  padding: 3px 9px;
+  padding: 4px 10px;
   border-radius: var(--radius-full);
   margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.dashboard-greeting h2 {
+.dashboard-hero-banner .dashboard-greeting h2 {
   font-size: 21px;
   font-weight: 800;
   letter-spacing: -0.025em;
-  color: var(--text-primary);
-  margin-bottom: 5px;
+  color: #ffffff !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+  margin-bottom: 6px;
 }
 
-.dashboard-greeting p {
-  font-size: 13px;
-  color: var(--text-secondary);
+.dashboard-hero-banner .dashboard-greeting p {
+  font-size: 13.5px;
+  color: #f1f5f9 !important;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
+  line-height: 1.5;
+}
+
+.dashboard-hero-banner .btn-secondary {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(8px);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.dashboard-hero-banner .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.45);
 }
 
 .dashboard-hero-actions {
